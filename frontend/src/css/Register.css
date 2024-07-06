@@ -1,0 +1,21 @@
+.register-header{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px 20px;
+}
+.tfSeach-con{
+    width: 200px;
+    height: 40px;
+}
+.auth-input{
+    border: none;
+    background-color: rgb(231, 229, 229);
+    width: 98%;
+    border: 1px solid grey;
+    height: 30px;
+    border-radius: 3px;
+    margin-top: 5px;
+}

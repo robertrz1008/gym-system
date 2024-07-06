@@ -1,0 +1,102 @@
+.dashboard-section{
+    background-color: #293649;
+    transition: all .500ms;
+}
+.dashboard-section h3{
+    color: white;
+}
+.dashboard-menu{
+    display: none;
+    transition: all .600ms;
+}
+.menu-exit-con{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-exit-con svg{
+    color: rgb(177, 175, 175);  
+    font-size: 35px;
+    transition: all .300ms;
+}
+.menu-exit-con svg:hover{
+    color: white;
+}
+.dashborad-list, .dashborad-list-minimixe{
+    width: 100;
+    list-style-type: none;
+    padding-left: 2px;
+}
+.dashborad-list li{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dashborad-list-minimixe li{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dashborad-list li:hover{
+    background-color: #44566d;
+}
+.dashborad-list-minimixe li:hover{
+    background-color: #44566d;
+}
+.link-item{
+    width: 90%;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(187, 180, 180);   
+}
+.item-active h5{
+    color: white;
+}
+
+.link-item h5{
+    margin-left: 20px;
+}
+.dashborad-list-minimixe li .link-item{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgb(187, 180, 180);
+}
+.dashborad-list-minimixe li .link-item h5{
+    display: none;
+}
+.link-item svg, .dashborad-list-minimixe li .link-item svg{
+    font-size: 25px;
+    color: rgb(187, 180, 180);
+}
+.dashborad-list-minimixe li .item-active svg, .item-active svg{
+    color: white;
+}
+
+@media(max-width: 500px){
+    .dashboard-menu{
+        display: none;
+        width: 65%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-color: #1a2433;
+        transition: all .600ms;
+    }
+    .dashboard-menu-open{
+        display: block;
+        transition: all .600ms;
+    }
+}
