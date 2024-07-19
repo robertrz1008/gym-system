@@ -6,6 +6,9 @@ nav{
     justify-content: space-between;
     align-items: center;
 }
+.menu-icon-con{
+    display: none;
+}
 nav h1{
     color: white;
     margin-left: 20px;
@@ -16,7 +19,10 @@ nav svg{
     color: white;
 }
 
-@media(max-width: 500px){
+@media(max-width: 1000px){
+    .menu-icon-con{
+        display: block;
+    }
     nav h1{
         display: none;
     }

@@ -1,10 +1,10 @@
-import { useAuth } from "../../context/AppContext.tsx" 
-import "../../css/Auth.css"
+import { useAuth } from "../../../context/AppContext.tsx" 
+import "../../../css/Auth.css"
 import {useForm, SubmitHandler} from "react-hook-form"
-import { FormValues, AppContextIn, User } from "../../interfaces/autInterface.ts"
+import { FormValues, AppContextIn, User } from "../../../interfaces/autInterface"
 import {Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import SmashSreen from "../components/main/SmashSreen.tsx"
+import SmashSreen from "../../components/main/SmashSreen.tsx"
 
 function LoginPage() {
 

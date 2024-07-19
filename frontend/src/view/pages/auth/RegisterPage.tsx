@@ -1,7 +1,7 @@
-import { useAuth } from "../../context/AppContext.tsx" 
+import { useAuth } from "../../../context/AppContext.tsx" 
 import { Link, useNavigate } from "react-router-dom"
 import {useForm, SubmitHandler} from "react-hook-form"
-import { FormValues, AppContextIn, User } from "../../interfaces/autInterface.d.ts"
+import { FormValues, AppContextIn, User } from "../../../interfaces/autInterface.d.ts"
 import { useEffect } from "react"
 
 function RegisterPage() {

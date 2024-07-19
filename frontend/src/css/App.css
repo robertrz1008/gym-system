@@ -2,6 +2,9 @@
     font-family: "Montserrat", sans-serif ;
     margin: 0; 
   }
+  body{
+    background-color: rgb(232, 239, 245);
+  }
 .for-parr{
   color: rgb(63, 61, 61);
   margin-top: 5px;
@@ -9,8 +12,44 @@
 .main-page{
   width: 100%;
   height: 100%;
-  background-color: rgb(179, 188, 196);
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
+}
+.title-con{
+  width: 95%;
+}
+.subtitle{
+  color: rgb(41, 40, 40);
+}
+
+.btn-con{
+  width: 220px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.btn{
+  border: none;
+  height: 43px;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 15px;
+}
+.btn-add{
+  background-color: rgb(41, 177, 0);
+  color: white;
+}
+.btn-add:hover{
+  background-color: rgb(46, 196, 0);
+}
+.btn-res{
+  background-color: rgb(177, 170, 170);
+  color: rgb(17, 17, 17);
+}
+.btn-res:hover{
+  background-color: rgb(105, 103, 103);
 }

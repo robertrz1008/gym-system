@@ -7,6 +7,9 @@ import { Outlet } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import SidebarMenu from "../components/main/SidebardMenu"
 import Sidebar from "../components/main/Sidebar"
+import { Toast} from 'primereact/toast';
+import { AppContextIn } from "../../interfaces/autInterface"
+import { useAuth } from "../../context/AppContext"
 
 function AppPage() {
 
@@ -15,6 +18,8 @@ function AppPage() {
   const [dMenu, setDMenu] = useState(false)
   const [pMenu, ssetPMenut] = useState(false)
   const [smashSreen, setSmashSren] = useState(true);
+
+  const { toast } = useAuth() as AppContextIn
 
   function ChangeLaout(){
     setDbMinimixe(!dbMinimixe)
@@ -38,6 +43,7 @@ function AppPage() {
 
   return (
     <div className="app-con">
+      <Toast ref={toast} position="bottom-right"/>
       {smashSreen && (<SmashSreen/>)}
         <Navbar 
               openDMenu={openDMenu}
@@ -55,9 +61,7 @@ function AppPage() {
                   dMenu={dMenu}
                   closeDMenu={closeDMenu}
             />
-            <div>
                 <Outlet/> 
-            </div> 
         </div>
     </div>
   )

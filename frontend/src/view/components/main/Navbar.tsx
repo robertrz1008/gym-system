@@ -12,7 +12,9 @@ function Navbar({openDMenu, changePMenu}: Props) {
   return (
     <>
       <nav>
-        <div onClick={openDMenu}>
+        <div 
+          className='menu-icon-con'
+          onClick={openDMenu}>
           <IoMdMenu/>
         </div>
         

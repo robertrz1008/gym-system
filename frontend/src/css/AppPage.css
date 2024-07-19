@@ -36,4 +36,10 @@
     .dashboard-section{
         display: none;
     }
+    .app-layout{
+        grid-template-columns: 1fr;
+    }
+    .app-db-minimixe{
+        grid-template-columns: 1fr;
+    }
 }

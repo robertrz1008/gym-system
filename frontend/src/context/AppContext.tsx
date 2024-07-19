@@ -1,8 +1,10 @@
-import {useContext, createContext, useState, useEffect} from "react"
+import {useContext, createContext, useState, useEffect, useRef} from "react"
 import { contexArg, User } from "../interfaces/autInterface"
 import { getProfileRequest, loginRequest, logoutRequest, registerRequest, vefifyTokenRequest } from "../api/autRequest"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { Toast,  } from 'primereact/toast';
+import { getImageByIdRequest } from "../api/clientRequest"
 
 
 const appContext = createContext({})
@@ -18,14 +20,25 @@ export const useAuth = () => {
 export function AppContextProvider({children}: contexArg){
     const [user, setUser] = useState<User>()
     const [isDisabled, setIsDisabled] = useState(false)
-    const [userImg, setUserImg] = useState(String)
     const [errors, setErrors] = useState()
     const [isAutenticate, setIstAutenticate] = useState(false)
     const [authLoading, setAuthLoading] = useState(false)
     const [loading, setLoading] = useState(false)
+    
 
     const buttonDisable = () => setIsDisabled(true)
     const buttonEnable = () => setIsDisabled(false)
+    
+    const toast = useRef<Toast>(null);
+
+    const showToasSuccess = (msg: string) => {
+        console.log("abriendo toasts")
+          toast.current?.show({severity:'success', summary: 'Success', detail:msg, life: 2000});
+    }    
+    const showToasError = (msg: string) => {
+        toast.current?.show({severity:'error', summary: 'Success', detail:msg, life: 2000});
+  }
+
 
     const singUp = async (user: User) => {
         setAuthLoading(true)
@@ -94,6 +107,14 @@ export function AppContextProvider({children}: contexArg){
             console.log(error)
         }
     }
+    const getImage = async (id: number) => {
+        try {
+            const response = await getImageByIdRequest(id)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const getProfile = async () => {
         try {
             const res = await getProfileRequest()
@@ -116,10 +137,13 @@ export function AppContextProvider({children}: contexArg){
             loading,
             authLoading,
             user,
-            userImg,
             getProfile,
             logout,
             errors,
+            getImage,
+            toast,
+            showToasSuccess,
+            showToasError
         }}>
             {children}
         </appContext.Provider>

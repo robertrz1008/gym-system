@@ -6,10 +6,10 @@ import { createAccessToken } from "../lib/jwt";
 import { CustomRequest, User } from "../utils/Interfaces";
 import { TOKEN_SECREAT } from "../utils/config";
 
-export const getUsersRequest = async (_req: Request, res: Response) => {
+export const getUsersRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        const response = await pgClient.query("select * from users")
+        const response = await pgClient.query("select * from users where id = $1", [req.user.id])
         pgClient.release()
         res.json(response.rows)
     } catch (error) {

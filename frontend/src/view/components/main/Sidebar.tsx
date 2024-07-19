@@ -4,6 +4,7 @@ import { IoMdMenu } from "react-icons/io";
 import { MdOutlineHome } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import { AiOutlineProduct } from "react-icons/ai";
+import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoIosFitness } from "react-icons/io";
 import { NavLink } from 'react-router-dom';
 
@@ -42,16 +43,28 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
                 </NavLink>
               </li>
               <li>
-                <div className={'link-item'}>
+                <NavLink 
+                    to="/Products"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <AiOutlineProduct/>
                     <h5>Productos</h5>
-                </div>
+                </NavLink>
               </li>
               <li>
-                <div className={'link-item'}>
+                <NavLink 
+                    to="/Equipments"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <IoIosFitness/>
-                    <h5>Maquinas</h5>
-                </div>
+                    <h5>Equipos</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/Sale"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <MdOutlineShoppingCart/>
+                    <h5>Vender</h5>
+                </NavLink>
               </li>
             </ul>
     </section>
