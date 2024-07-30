@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+
 import { Props } from '../../../interfaces/autInterface'
 import { getImageByIdRequest } from '../../../api/clientRequest'
-import { Skeleton } from 'primereact/skeleton';
+import { useEffect, useState } from 'react'
 
-function ProductImage({id}: Props) {
-
+function ProductTargetImg({id}: Props) {
+  
+  
     const [image, setImage] = useState<string>("")
+
     async function getImage(){
         try {
             const response = await getImageByIdRequest(id as number)
@@ -14,22 +16,24 @@ function ProductImage({id}: Props) {
             console.log(error)
         }
     }
+
     const http = "http://localhost:3000/"+image
+    
     useEffect(() => {
         getImage()
     }, [])
-
+ 
     if(!image){
-        return <td>
-            <Skeleton size="60px" className="mr-2"></Skeleton>
-        </td>
+        return <div>
+            <div className='box-img-loading'></div> 
+        </div>
     }else{
         return (
-            <td className='td-img'>
-                <img src={http} />
-            </td>
+            <div className='product-target-img-con'>
+                <img src={http}/>
+            </div>
         )
     }
 }
 
-export default ProductImage
+export default ProductTargetImg

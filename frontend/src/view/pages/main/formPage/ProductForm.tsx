@@ -26,6 +26,7 @@ function ProductForm() {
   const [description, setDescription] = useState("")
   const [priceCompra, setPriceCompra] = useState(0.0)
   const [priceVenta, setPriceVenta] = useState(0.0)
+  const [stock, setStock] = useState(0)
   const [isDecriptionEmp, setDecriptionEmp] = useState(false)
   const [ispriceVentaEmp, setPriceVentaEmp] = useState(false)
   //image state
@@ -44,7 +45,6 @@ function ProductForm() {
     setDescription("")
     setPriceCompra(0)
     setPriceVenta(0)
-
   }
 
     //imagen
@@ -56,11 +56,13 @@ function ProductForm() {
           console.log(error)
       }
   }
+  //para seleccionar la imagen desde el explorador de archivo al formulario
   const handleButtonClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   }
+  //enviar la imagen editada al formulario
   async function selectHandle(e: ChangeEvent<HTMLInputElement>){
     const selectedFile = e.target.files?.[0]
     
@@ -81,6 +83,7 @@ function ProductForm() {
     }
     
   }
+  //enviar la imagen al servidor
   const uploadImg = async (proId: number)  => {
 
     console.log("subiendo imagen")
@@ -177,13 +180,15 @@ function ProductForm() {
     return true
   }
   
+  //enviar el forumulario al backend
   function handleSubmit(){
     if(!validateTf()) return
 
     const pro = {
         description: description.trim(),
         price_compra: priceCompra,
-        price_venta: priceCompra,
+        price_venta: priceVenta,
+        stock: stock
     }
     if(!isProUpdateMode){
         createProduct(pro)
@@ -194,26 +199,22 @@ function ProductForm() {
     clear()
   }
 
-  useEffect(() => {
-    if(isProUpdateMode){
-      getImage(proModify.id_image as number)
-      
-      if(proModify.id_image == 3){
-        setBtnDisabled(true)
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if(isProUpdateMode){
-      console.log("md mode")
       setDescription(proModify.description)
       setPriceCompra(proModify.price_compra)
       setPriceVenta(proModify.price_venta)
+      getImage(proModify.id_image as number)
+      setStock(proModify.stock)
+
+      if(proModify.id_image == 3){
+        setBtnDisabled(true)
+      }
     }else{
       setBtnDisabled(true)
     }
-  },[proModify])
+  },[])
 
   useEffect(() => {
     if(fileURL){
@@ -228,15 +229,16 @@ function ProductForm() {
       className="main-page"
     >
         <div 
-            className="register-form"
+          className="register-form"
         >  
-            <div className="title-form-con">
+            <div className="form-con">
+            <div className="pd-title-con">
                 <h3 className="subtitle">Datos del producto</h3>
             </div>
-            <div className="form-con">
                 <div className="image-form-con">
                   <ImageForm
                       fileURL={fileURL}
+                      isEntityMode={isProUpdateMode}
                       http={http}
                   />
                   <div className='fileName-body'>
@@ -270,6 +272,7 @@ function ProductForm() {
                 <div className="texfield-form-con">
                   <TextField 
                     onChange={(e) => setDescription(e.target.value)}
+                    sx={{ width:"100%"}}
                     value={description}
                     error={isDecriptionEmp}
                     helperText={isDecriptionEmp ? "La description es requerido" : ""}
@@ -280,6 +283,7 @@ function ProductForm() {
                   <TextField 
                   type="number"
                   onChange={(e) => setPriceCompra(parseFloat(e.target.value))}
+                  sx={{ marginTop: 2, width:"100%"}}
                   value={priceCompra}
                   id="Telefono" 
                   label="PrecioCompra" 
@@ -289,6 +293,7 @@ function ProductForm() {
                 <TextField 
                   type="number"
                   onChange={(e) => setPriceVenta(parseFloat(e.target.value))}
+                  sx={{ marginTop: 2, width:"100%"}}
                   value={priceVenta}
                   error={ispriceVentaEmp}
                   helperText={ispriceVentaEmp ? "El precioVenta es requerido" : ""}
@@ -296,32 +301,43 @@ function ProductForm() {
                   label="PrecioVenta" 
                   variant="outlined" 
                 />
+                <TextField 
+                  type="number"
+                  onChange={(e) => setStock(parseFloat(e.target.value))}
+                  sx={{ marginTop: 2, width:"100%"}}
+                  value={stock}
+                  id="DNI" 
+                  label="Stock" 
+                  variant="outlined" 
+                />
+                </div> 
+
+                <div className="btn-con">
+                    <button 
+                      onClick={() => {
+                        navigate("/Products")
+                        clear()
+                      }}
+                      type="reset"
+                      className="btn btn-res"
+                    > 
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        console.log("intentando envio")
+                        handleSubmit()
+                      }}
+                      className="btn btn-add"
+                    > 
+                    Guardar
+                    </button>
                 </div>
             </div>
-            
-            <div className="btn-con">
-                <button 
-                  onClick={() => {
-                    navigate("/Products")
-                    clear()
-                  }}
-                  type="reset"
-                  className="btn btn-res"
-                > 
-                  Cancelar
-                </button>
-                <button
-                  type="submit" 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    console.log("intentando envio")
-                    handleSubmit()
-                  }}
-                  className="btn btn-add"
-              > 
-                {"Guardar "}<FiDatabase/>
-              </button>
-            </div>
+
+            <br />
         </div>
     </div>
   )

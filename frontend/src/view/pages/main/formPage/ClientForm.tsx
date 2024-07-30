@@ -109,25 +109,28 @@ function ClientForm() {
                 <TextField 
                   onChange={(e) => setName(e.target.value)}
                   value={name}
+                  sx={{ width:"100%"}}
                   error={isNameEmpty}
                   helperText={isNameEmpty ? "El nombre es requerido" : ""}
                   id="standard-error-helper-text"
                   label="Nombre y Apellido" 
-                  variant="filled" 
+                  variant="outlined" 
                 />
                 <TextField 
                   onChange={(e) => setTel(e.target.value)}
                   value={tel}
+                  sx={{ marginTop: 2, width:"100%"}}
                   id="Telefono" 
                   label="Telefono" 
-                  variant="filled" 
+                  variant="outlined" 
                 />
                 <TextField 
                   onChange={(e) => setCin(e.target.value)}
                   value={cin}
+                  sx={{ marginTop: 2, width:"100%"}}
                   id="DNI" 
                   label="DNI" 
-                  variant="filled" 
+                  variant="outlined" 
                 />
             </div>
             

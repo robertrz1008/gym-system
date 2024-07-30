@@ -1,18 +1,16 @@
 import "../../../../css/Register.css"
-import {Input} from '@mui/material'
+import { TextField} from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { IoIosSearch } from "react-icons/io";
 import ClientTable from "../../../components/tables/ClientTable";
 import { useNavigate } from "react-router-dom";
 import { useAbm } from "../../../../context/StoreContext";
-import { AppContextIn, StoreContextIn } from "../../../../interfaces/autInterface";
+import { StoreContextIn } from "../../../../interfaces/autInterface";
 import { useEffect } from "react";
-import { useAuth } from "../../../../context/AppContext";
 
 function ClientPage() {
 
   const {getClients, getClientsByFilter} = useAbm() as StoreContextIn
-  const { toast } = useAuth() as AppContextIn
 
   const navigate = useNavigate()
 
@@ -33,7 +31,7 @@ function ClientPage() {
         <div className='register-header'>
           <div className='tfSeach-con'>
               
-            <Input
+            {/* <Input
               onChange={(e) => {
                 getClientsByFilter(e.target.value)
               }}
@@ -44,8 +42,22 @@ function ClientPage() {
                     <IoIosSearch/>
                   </InputAdornment>
                 }
+            /> */}
+            <TextField
+                onChange={(e) =>
+                  getClientsByFilter(e.target.value)
+                }
+                id="outlined-start-adornment"
+                sx={{  width: '250px' }}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">
+                  <IoIosSearch/>
+                </InputAdornment>
+                
+                }}
+                size='small'
             />
-        </div>
+        </div> 
           <button 
               onClick={() => clientForm()}
               className="btn btn-add"

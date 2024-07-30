@@ -1,4 +1,4 @@
-import { Equipment, Product } from "../interfaces/autInterface";
+import { Equipment } from "../interfaces/autInterface";
 import axios from "./axios"
 
 export const getEquipamentsRequest = () => axios.get("/getEquipaments")

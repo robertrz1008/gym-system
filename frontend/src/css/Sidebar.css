@@ -7,7 +7,7 @@
 }
 .dashboard-menu{
     display: none;
-    transition: all .600ms;
+    transition: all 0.2s ease;
 }
 .menu-exit-con{
     width: 100%;
@@ -103,10 +103,10 @@
         left: 0;
         z-index: 1;
         background-color: #1a2433;
-        transition: all .600ms;
+        transition: all 0.2s ease;
     }
     .dashboard-menu-open{
         display: block;
-        transition: all .600ms;
+        transition: all 0.2s ease;
     }
 }

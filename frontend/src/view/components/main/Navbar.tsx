@@ -1,4 +1,3 @@
-import React from 'react'
 import "../../../css/NavBar.css"
 import { IoMdMenu } from "react-icons/io";
 import Profile from './Profile';

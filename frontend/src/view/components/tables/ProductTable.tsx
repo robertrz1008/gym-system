@@ -6,7 +6,7 @@ import ModalDialog from "../main/ModalDialog";
 import DeleteProductMsg from "../ModalDialog/DeleteProductMsg";
 import ProductImage from "../rowImage/ProductImage";
 import { useEffect } from "react";
-import { Tooltip } from "@mui/material";
+import { Tooltip } from 'react-tooltip'
 
 
 function ProductTable() {
@@ -30,7 +30,8 @@ function ProductTable() {
                     <th>Descripción</th>
                     <th className="td-price">precioConpra</th>
                     <th className="td-price">precioVenta</th>
-                    <th className='td-icon'></th>
+                    
+                    <th className='td-icon'>Stock</th>
                 </tr>
             </thead>
             {
@@ -51,6 +52,7 @@ function ProductTable() {
                                     <td>{data.description}</td>
                                     <td className="td-price">{data.price_compra}</td>
                                     <td className="td-price">{data.price_venta}</td>
+                                    <td className="td-id">{data.stock}</td>
                                     <td 
                                         onClick={(e) =>{    
                                             e.stopPropagation()
@@ -59,9 +61,10 @@ function ProductTable() {
                                         className='td-icon'
                                     >
                                         <div onClick={ () => openModalDialog()}> 
-                                            <Tooltip title="Eliminar" placement="top-end">
+                                        <a className="my-anchor-element">
                                                 <MdDeleteOutline/> 
-                                            </Tooltip>
+                                            </a>
+                                            <Tooltip anchorSelect=".my-anchor-element" place="bottom">Eliminar</Tooltip>
                                         </div>
                                         <ModalDialog>
                                             <DeleteProductMsg id={data.id}/>

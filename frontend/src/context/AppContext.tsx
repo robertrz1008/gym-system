@@ -32,7 +32,6 @@ export function AppContextProvider({children}: contexArg){
     const toast = useRef<Toast>(null);
 
     const showToasSuccess = (msg: string) => {
-        console.log("abriendo toasts")
           toast.current?.show({severity:'success', summary: 'Success', detail:msg, life: 2000});
     }    
     const showToasError = (msg: string) => {

@@ -13,6 +13,8 @@ import ImageTest from './view/pages/ImageTest';
 import EquipmentPage from './view/pages/main/registers/EquipmentPage';
 import EquipmentForm from './view/pages/main/formPage/EquipmenForm';
 import SalePage from './view/pages/main/transactions/SalePage';
+import PayPage from './view/pages/main/transactions/PayPage';
+import SaleSuccess from './view/pages/main/transactions/SaleSuccess';
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
                         <Route path='Equipments' element={<EquipmentPage/>}/>
                         <Route path='Equipments/form' element={<EquipmentForm/>}/>
                         <Route path='Sale' element={<SalePage/>}/>
+                        <Route path='Sale/success/:monto' element={<SaleSuccess/>}/>
+                        <Route path='Pay' element={<PayPage/>}/>
                     </Route>
                 </Route>
           </Routes>

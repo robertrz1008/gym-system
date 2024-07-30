@@ -1,5 +1,5 @@
 import "../../../../css/Register.css"
-import {Input} from '@mui/material'
+import {Input, TextField} from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { IoIosSearch } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -30,18 +30,16 @@ function ProductPage() {
         </div>
         <div className='register-header'>
           <div className='tfSeach-con'>
-              
-            <Input
-              onChange={(e) => {
-                  getProductsByFilter(e.target.value)
+          <TextField
+              onChange={(e) =>
+                getProductsByFilter(e.target.value)
+              }
+              id="outlined-start-adornment"
+              sx={{  width: '250px' }}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"> <IoIosSearch/> </InputAdornment>
               }}
-              color="success"
-              id="input-with-icon-adornment"
-              startAdornment={
-                <InputAdornment position="start">
-                    <IoIosSearch/>
-                  </InputAdornment>
-                }
+              size='small'
             />
         </div>
           <button 

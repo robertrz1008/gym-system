@@ -1,6 +1,6 @@
-import {request, Router} from "express"
+import {Router} from "express"
 import { authRequired } from "../middleware/validatorToken"
-import { changeProductImgRequest, createProductRequest, deleteProductRequest, getProductsByFilterRequest, getProductsRequest, updateProductoRequest } from "../controllers/productController"
+import { changeProductImgRequest, createProductRequest, deleteProductRequest, getProductsByFilterRequest, getProductsRequest, updateProductoRequest, updateProductStockRequest } from "../controllers/productController"
 
 const autRote = Router()
 
@@ -10,7 +10,7 @@ autRote.post("/createProduct", authRequired, createProductRequest)
 autRote.delete("/deleteProduct/:id", authRequired, deleteProductRequest)
 autRote.put("/updateProduct", authRequired, updateProductoRequest)
 autRote.put("/changeImgProduct/:proId/:imgId", authRequired, changeProductImgRequest)
-
+autRote.put("/updateProduct/:id", authRequired, updateProductStockRequest)
 
 
 

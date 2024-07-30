@@ -223,13 +223,14 @@ function EquipmentForm() {
         <div 
             className="register-form"
         >  
-            <div className="title-form-con">
-                <h3 className="subtitle">Formulario de Equipos</h3>
-            </div>
             <div className="form-con">
+                <div className="pd-title-con">
+                    <h3 className="subtitle">Formulario de Equipos</h3>
+                </div>
                 <div className="image-form-con">
                   <ImageForm
                       fileURL={fileURL}
+                      isEntityMode={isEquiUpdateMode}
                       http={http}
                   />
                   <div className='fileName-body'>
@@ -265,6 +266,7 @@ function EquipmentForm() {
                     onChange={(e) => setDescription(e.target.value)}
                     value={description}
                     error={isDecriptionEmp}
+                    sx={{ width:"100%"}}
                     helperText={isDecriptionEmp ? "La description es requerido" : ""}
                     id="outlined-textarea"
                     label="Descripción" 
@@ -275,6 +277,7 @@ function EquipmentForm() {
                   type="number"
                   onChange={(e) => setAmount(parseInt(e.target.value))}
                   value={amount}
+                  sx={{ marginTop: 2, width:"100%"}}
                   label="Cantidad" 
                   variant="outlined" 
                 />
@@ -282,36 +285,37 @@ function EquipmentForm() {
                   type="text"
                   onChange={(e) => setObservation(e.target.value)}
                   value={observation}
+                  sx={{ marginTop: 2, width:"100%"}}
                   error={isObservationEmp}
                   helperText={isObservationEmp ? "La observación es requerida" : ""}
                   label="Observacion" 
                   variant="outlined" 
                 />
                 </div>
+                <div className="btn-con">
+                  <button 
+                    onClick={() => {
+                      navigate("/Equipments")
+                      clear()
+                    }}
+                    type="reset"
+                    className="btn btn-res"
+                  > 
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleSubmit()
+                    }}
+                    className="btn btn-add"
+                  > 
+                    Guardar
+                  </button>
+                </div>
             </div>
-            
-            <div className="btn-con">
-                <button 
-                  onClick={() => {
-                    navigate("/Equipments")
-                    clear()
-                  }}
-                  type="reset"
-                  className="btn btn-res"
-                > 
-                  Cancelar
-                </button>
-                <button
-                  type="submit" 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleSubmit()
-                  }}
-                  className="btn btn-add"
-              > 
-                {"Guardar "}<FiDatabase/>
-              </button>
-            </div>
+            <br />
         </div>
     </div>
   )

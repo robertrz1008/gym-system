@@ -1,6 +1,5 @@
-import React from 'react'
+
 import { IoIosArrowDropleft } from "react-icons/io";
-import { IoMdMenu } from "react-icons/io";
 import { MdOutlineHome } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import { AiOutlineProduct } from "react-icons/ai";

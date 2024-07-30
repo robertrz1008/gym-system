@@ -52,7 +52,7 @@ function ClientTable() {
                                         }}
                                         className='td-icon'
                                     >
-                                        <div
+                                        <div 
                                         className="icon-con"
                                          onClick={ () => openModalDialog()}>
                                             <a className="my-anchor-element">

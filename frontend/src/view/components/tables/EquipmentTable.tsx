@@ -3,10 +3,9 @@ import { StoreContextIn } from '../../../interfaces/autInterface';
 import { useAbm } from "../../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 import ModalDialog from "../main/ModalDialog";
-import DeleteProductMsg from "../ModalDialog/DeleteProductMsg";
 import ProductImage from "../rowImage/ProductImage";
 import { useEffect } from "react";
-import { Tooltip } from "@mui/material";
+import { Tooltip } from 'react-tooltip'
 import DeleteEquipmentsMsg from "../ModalDialog/DeleteEquipmentMsg";
 
 
@@ -50,7 +49,7 @@ function ProductTable() {
                                     <ProductImage id={data.id_image as number}/>
                                     <td>{data.description}</td>
                                     <td>{data.observation}</td>
-                                    <td className="td-id">{data.amount}</td>
+                                    <td className="td-id">{data.amount}</td> 
                                     <td 
                                         onClick={(e) =>{    
                                             e.stopPropagation()
@@ -59,9 +58,10 @@ function ProductTable() {
                                         className='td-icon'
                                     >
                                         <div onClick={ () => openModalDialog()}> 
-                                            <Tooltip title="Eliminar" placement="top-end">
+                                        <a className="my-anchor-element">
                                                 <MdDeleteOutline/> 
-                                            </Tooltip>
+                                            </a>
+                                            <Tooltip anchorSelect=".my-anchor-element" place="bottom">Eliminar</Tooltip>
                                         </div>
                                         <ModalDialog>
                                             <DeleteEquipmentsMsg id={data.id}/>

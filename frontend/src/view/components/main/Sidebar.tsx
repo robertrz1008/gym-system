@@ -1,4 +1,3 @@
-import React from 'react'
 import "../../../css/Sidebar.css"
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineHome } from "react-icons/md";
@@ -7,6 +6,7 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoIosFitness } from "react-icons/io";
 import { NavLink } from 'react-router-dom';
+import { TbCreditCardPay } from "react-icons/tb";
 
 interface Props{
     ChangeLaout:() => void
@@ -63,6 +63,14 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
                     to="/Sale"
                     className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <MdOutlineShoppingCart/>
+                    <h5>Vender</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/Pay"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <TbCreditCardPay/>
                     <h5>Vender</h5>
                 </NavLink>
               </li>

@@ -5,13 +5,16 @@ import { useAbm } from '../../../context/StoreContext'
 interface Props{
     fileURL: string
     http: string
+    isEntityMode: boolean
 }
 
-function ImageForm({fileURL, http}:Props) {
+function ImageForm({fileURL, http, isEntityMode}:Props) {
 
     const { isEquiUpdateMode} = useAbm() as StoreContextIn
 
-    if (!fileURL && !isEquiUpdateMode) {
+
+
+    if (!fileURL && !isEntityMode) {
         return(
             <div className="image-background">
                 <div></div>

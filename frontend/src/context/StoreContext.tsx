@@ -1,8 +1,9 @@
-import {useContext, createContext, useState} from "react"
-import { contexArg, Client, Product, Equipment } from "../interfaces/autInterface"
+import {useContext, createContext, useState, useEffect} from "react"
+import { contexArg, Client, Product, Equipment, ProductSale } from "../interfaces/autInterface"
 import { deleteClientsRequest, getClientsByFilterRequest, getClientsRequest } from "../api/clientRequest"
-import { deleteProductRequest, getProductsByFilterRequest, getProductsRequest } from "../api/productRequest"
+import { deleteProductRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
+import { createProductDetailRequest, createSaleRequest, udpateSaleTotalRequest } from "../api/saleRequest"
 
 
 const appContext = createContext({})
@@ -28,6 +29,21 @@ export default function StoreContextProvider({children}: contexArg){
     const [equipments, setEquipments] = useState<Array<Equipment>>([])
     const [equiModify, setEquiModify] = useState<Equipment>() 
     const [isEquiUpdateMode, setEquiUpdateMode] = useState(false)
+    const [productDetail, setProductDetail] = useState<ProductSale[]>([])
+    const [isBtnDisabled, setBtnDisabled] = useState(true)
+    const [total, setTotal] = useState(0)
+
+    useEffect(() => {
+      sumTotal()
+    }, [productDetail])
+    
+    useEffect(() => {
+      if(productDetail.length == 0){
+        setBtnDisabled(true)
+      }else{
+        setBtnDisabled(false)
+      }
+    }, [productDetail])
 
 
     const openModalDialog = () => setShowModalForm(true)
@@ -109,16 +125,99 @@ export default function StoreContextProvider({children}: contexArg){
       const response = await getEquipamentsByFilterRequest(value)
       setEquipments(response.data)
     }
-  
+    // product Sale
     
+    function sumTotal(){
+      const newTotal = productDetail.reduce((con, el) => con + el.subtotal, 0)
+      setTotal(newTotal)
+      // console.log("La suma total es: "+total)
+    }
+    function totalZero(){
+      setTotal(0)
+    }
+    function addDetailProduct( id: number){
+      setProductDetail((prevProducts) => {
+        return prevProducts.map((product) => {
+          return product.id === id
+            ? { ...product, subtotal: product.price_venta * product.amount }
+            : product;
+        });
+      });
+    }
+  
+    function addProductAmout(id: number){
+      setProductDetail((detailPro) => {
+        return detailPro.map((pro) => {
+          return pro.id == id? { ...pro, amount: pro.amount + 1 } : pro
+        })
+      })
+    }
+    function changeProductAmount(id: number, amountCurrent: number){
 
+      if(!amountCurrent) return
+
+      setProductDetail((detailPro) => {
+        return detailPro.map((pro) => {
+          return pro.id == id? { ...pro, amount: amountCurrent, subtotal: pro.price_venta * amountCurrent } : pro
+        })
+      })
+      sumTotal()
+      console.log(productDetail)
+    }
+  
+    function addProductSale(pr: ProductSale){
+      if(productDetail.some((data) => data.id === pr.id)){
+        console.log("mismo producto")
+        addProductAmout(pr.id as number);
+      } else {
+        console.log("producto diferente")
+        setProductDetail([...productDetail, pr])
+      }
+      addDetailProduct(pr.id as number);
+      console.log(productDetail)
+    }
+    function deleteProductDetail(product: ProductSale){
+      const newProduct = productDetail.filter((Data) => Data.id != product.id)
+      setTotal((data) => data - product.subtotal)
+      closeModalDialog()
+      setProductDetail(newProduct)
+    }
+    async function createSale(){
+      if(productDetail.length == 0) return
+      try {
+        setBtnDisabled(true)
+        const saleId: number | any = await createSaleRequest()
+        for (const pro of productDetail) {
+          await createProductDetailRequest(
+            {
+              proId: pro.id as number,
+              idSale: saleId.data,
+              amount: pro.amount,
+              subTotal: pro.subtotal
+            }
+          )
+          const proIdCurrent = pro.amount
+          await updateProductStockRequest({stock: proIdCurrent}, pro.id as number)
+        }
+        
+        await udpateSaleTotalRequest({total: total}, saleId.data)
+        setBtnDisabled(false)
+        setProductDetail([])
+        return true
+      } catch (error) {
+        setBtnDisabled(false)
+        console.log(error)
+        return false
+      }
+    }
 
     return (
         <appContext.Provider value={{
             clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter,
             product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter,
             equipments, getEquipmentsList, setEquipmentUpdate, isEquiUpdateMode, equiModify, setEquipmentMode, getEquipmentsByFilter, deleteEquipment,
-            openModalDialog, closeModalDialog, showModalD
+            productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero,
+            openModalDialog, closeModalDialog, showModalD, isBtnDisabled
         }}>
             {children}
         </appContext.Provider>

@@ -7,6 +7,9 @@ import equipmentRoute from "./routes/equipament.routes"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import path from "path"
+import saleRoute from "./routes/sale.routes"
+import membership from "./routes/membership.routes"
+
 
 const app = express()
 
@@ -26,6 +29,8 @@ app.use("/api", autRote)
 app.use("/api", clientRoute)
 app.use("/api", productRoute)
 app.use("/api", equipmentRoute)
+app.use("/api", saleRoute)
+app.use("/api", membership)
 
 
 app.listen(PORT, () => {

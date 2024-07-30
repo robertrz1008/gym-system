@@ -57,24 +57,20 @@ CREATE TABLE product_detail(
     id_sale INT NOT NULL,
     Foreign Key (id_product) REFERENCES products(id),
     Foreign Key (id_sale) REFERENCES sales(id)
-)
+);
+CREATE table pay_options(
+    id SERIAL PRIMARY KEY,
+    description VARCHAR(45) NOT NULL,
+    amount INT NOT NULL
+);
+Create TABLE payments_membresy(
+    id SERIAL PRIMARY KEY,
+    id_client INT,
+    id_pay_option INT DEFAULT 2,
+    pay_date DATE DEFAULT CURRENT_DATE,
+    expiration_date Date,
+    Foreign Key (id_client) REFERENCES clients(id),
+    Foreign Key ( id_pay_option) REFERENCES clients(id)
+);
 
-ALTER Table equipments ADD amount INT DEFAULT 1;
-
-select * from clients;
-
-INSERT INTO users(name, email, password) VALUES( 'test1', 'test1@gmail.com', '12345678')
-
-drop table users
-
-DELETE FROM users;
-
-INSERT INTO clients(name, telephone, dni, id_user) VALUES('Alejandro Andres', '88909878', '3333333', 5)
-
-SELECT * FROM equipments;
-
-DROP table products;
-
-SELECT id, name FROM images;
-
-delete from images WHERE id > 3
+INSERT INTO pay_options(description, amount) VALUES('Sesion', 10000);

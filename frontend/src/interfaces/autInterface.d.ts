@@ -29,6 +29,14 @@ export interface Product{
     price_compra: double,
     price_venta: double,
     id_image?: number
+    stock: number
+}
+export interface ProductSale{
+    id?: number,
+    description: string,
+    price_venta: number,
+    amount: number,
+    subtotal: number
 }
 export interface Equipment{
     id?: number,
@@ -94,4 +102,12 @@ export interface StoreContextIn{
     setEquipmentMode: (val: boolean) => void
     getEquipmentsByFilter: (val: string) => void
     deleteEquipment: (id: number) => void
+    productDetail: ProductSale[]
+    isBtnDisabled: boolean
+    addProductSale: (pr: ProductSale) => void
+    changeProductAmount: (id: number, amountCurrent: number) => void
+    deleteProductDetail: (pr: ProductSale) => void
+    createSale: () => void
+    total: number
+    totalZero: () => void
 }
