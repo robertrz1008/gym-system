@@ -63,14 +63,23 @@ CREATE table pay_options(
     description VARCHAR(45) NOT NULL,
     amount INT NOT NULL
 );
-Create TABLE payments_membresy(
+Create TABLE payments_membership(
     id SERIAL PRIMARY KEY,
     id_client INT,
     id_pay_option INT DEFAULT 2,
     pay_date DATE DEFAULT CURRENT_DATE,
     expiration_date Date,
     Foreign Key (id_client) REFERENCES clients(id),
-    Foreign Key ( id_pay_option) REFERENCES clients(id)
-);
+    Foreign Key ( id_pay_option) REFERENCES pay_options(id),
+    total INT
+); 
+
+alter table payments_membresy RENAME to payments_membership;
+
+drop Table payments_membership;
 
 INSERT INTO pay_options(description, amount) VALUES('Sesion', 10000);
+
+delete from payments_membership;
+
+select * from payments_membership

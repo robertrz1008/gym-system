@@ -1,54 +1,60 @@
 import { FaSearch } from "react-icons/fa";
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAbm } from "../../../../context/StoreContext";
-import { Client, StoreContextIn } from "../../../../interfaces/autInterface";
+import { Client, PaymentOptions, StoreContextIn } from "../../../../interfaces/autInterface";
 import ModalDialog from "../../../components/main/ModalDialog";
 import ClientSearch from "../../../components/ModalForm/ClientSearch";
-import { getPayOptipsRequest } from "../../../../api/membershipRequest";
+import { makePaymentMemership } from "../../../../api/membershipRequest";
+import { addOneMont } from "../../../../utils/DateUtils";
+import SelectButton from "../../../components/main/SelectButton";
+
 
 
 function PayPage() {
 
   const {openModalDialog} = useAbm() as StoreContextIn
+  const payments: PaymentOptions[] = [
+    {name: "Mensual", value: 1},
+    {name: "Sesón", value: 2}
+  ];
 
-
-  const [clientName, setClientName] = useState<Client>();
-  const [typePay, setTypePay] = useState<number>()
-  const [entryDate, SetEntryDate] = useState<String>()
-  const [payOptions, setPayOptions] = useState<{id: number, description: string, amount: number}[]>([])
+  const [clientName, setClientName] = useState<Client | null>();
+  const [entryDate, SetEntryDate] = useState<string>()
+  const [typePay, setTypePay] = useState<PaymentOptions | null>();
+  
 
 
   function clientSelect(cli: Client){
       setClientName(cli)
   }
-  function agregarUnMes(fecha: Date): Date {
-    // Crear una nueva fecha basada en la fecha dada
-    let nuevaFecha = new Date(fecha);
-    
-    // Incrementar el mes
-    nuevaFecha.setMonth(nuevaFecha.getMonth() + 1);
 
-    return nuevaFecha;
-}
+  function clear(){
+    setClientName(null)
+    SetEntryDate("")
+    setTypePay(null)
+  }
 
-  async function getPayOptions(){
+  function paySelected(item: PaymentOptions){
+    setTypePay(item)
+  }
+  async function makePayment(){
     try {
-      const response = await getPayOptipsRequest()
-      setPayOptions(response.data)
+      const payment = {
+        id_client: clientName?.id as number,
+        id_pay_option: typePay?.value as number,
+        pay_date: entryDate as string,
+        expiration_date: addOneMont(entryDate as string)
+      }
+      console.log(payment)
+      await makePaymentMemership(payment)
+      clear()
     } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    getPayOptions()
-    const d = new Date()
-    console.log(agregarUnMes(d))
-  }, [])
+  // const handleChange = (event: SelectChangeEvent) => setTypePay(parseInt(event.target.value));
 
-  const handleChange = (event: SelectChangeEvent) => setTypePay(parseInt(event.target.value));
 
   return (
     <div className="main-page">
@@ -67,41 +73,39 @@ function PayPage() {
               </div>
               <button onClick={() => openModalDialog()} className="btn btn-search"><FaSearch/></button>
             </div>
-            <h4 style={{marginTop: "15px"}}>Tipo de pago</h4>
-            <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                sx={{marginTop:"5px", width:"100%"}}
-                onChange={handleChange}
-              >
-                <MenuItem value={"0"}>
-                  <em>Seleccionar</em>
-                </MenuItem>
-                <MenuItem value={"1"}> Mensual</MenuItem>
-                <MenuItem value={"2"}>Sesion</MenuItem>
-              </Select>
-
+              
             <h4 style={{marginTop: "15px"}}>Fecha de pago</h4>  
             <input 
+              value={entryDate}
               onChange={(e) => SetEntryDate(e.target.value) }
               className="input-date" 
               type="date"
             />
+            
           </div>
 
-          <div className="btn-con">
-              <button className="btn btn-reset">Limpiar</button>
+          {/* <div> */}
+                <SelectButton 
+                    items={payments}
+                    itemSelected={typePay as PaymentOptions}
+                    selectItem={paySelected}
+                />  
+            {/* </div> */}
+
+          <div style={{width: "100%", paddingRight:"10px", paddingLeft:"10px", marginTop: "20px"}}>
+              {/* <button 
+                className="btn btn-reset"
+                onClick={() => clear()}
+              >
+                Limpiar
+              </button> */}
               <button 
-                  onClick={() => console.log({
-                    id_client: clientName?.id,
-                    type_pay: typePay,
-                    date: entryDate
-                  })}
-                  className="btn btn-add"
+                  onClick={() => makePayment()}
+                  className="btn btn-add btn-full"
               >
                 Aceptar
               </button>
-          </div>
+          </div> 
           <ModalDialog>
             <ClientSearch
               clientSelect={clientSelect}/>

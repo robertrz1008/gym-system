@@ -1,13 +1,5 @@
 import { AppSlice } from "../redux/AppEntity";
 
-export interface Props{
-    id?:number
-    http?:string
-}
-
-export interface ReduxState {
-    auth: AppSlice; 
-}
 export interface contexArg {
     children: ReactNode
 }
@@ -45,6 +37,18 @@ export interface Equipment{
     amount: number
     id_image?: number
 }
+export interface PaymentMembership{
+    id?: number,
+    id_client: number,
+    id_pay_option: number,
+    pay_date: string,
+    expiration_date: string
+}
+export interface PaymentOptions{
+    name: string,
+    value: number
+}
+
 export interface FormValues{
     name: string,
     email: string,
