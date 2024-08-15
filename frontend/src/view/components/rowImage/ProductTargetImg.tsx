@@ -2,6 +2,7 @@
 import { Props } from '../../../interfaces/autInterface'
 import { getImageByIdRequest } from '../../../api/clientRequest'
 import { useEffect, useState } from 'react'
+import { Skeleton } from 'primereact/skeleton';
 
 function ProductTargetImg({id}: Props) {
   
@@ -25,7 +26,7 @@ function ProductTargetImg({id}: Props) {
  
     if(!image){
         return <div>
-            <div className='box-img-loading'></div> 
+            <Skeleton size="150px" className="mr-2"></Skeleton>
         </div>
     }else{
         return (

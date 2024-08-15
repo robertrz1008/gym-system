@@ -12,8 +12,15 @@ function ProductList() {
 
     useEffect(() => {
         getProductsList()
-
     }, [])
+
+    function showText(str: string){
+        if(str.length > 16){
+            let newStr = str.slice(0, 15)
+            return newStr+"..."
+        }
+        return str
+    }
 
     useEffect(() => {
         let newProduct = product.filter(pro => pro.stock > 0)
@@ -42,7 +49,7 @@ function ProductList() {
                           key={pr.id}
                         >
                             <ProductTargetImg id={pr.id_image}/>
-                            <p>{pr.description}</p>
+                            <p>{showText(pr.description)}</p>
                             <p>{"$ "+pr.price_venta}</p>
                         </div>
                     ))

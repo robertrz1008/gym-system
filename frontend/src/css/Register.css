@@ -10,8 +10,10 @@
     border-radius: 3px;
 }
 .tfSeach-con{
-    width: 200px;
+    width: 50%;
     height: 40px;
+    display: flex;
+    align-items: center;
 }
 .auth-input{
     border: none;

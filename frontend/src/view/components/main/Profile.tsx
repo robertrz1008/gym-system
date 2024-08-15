@@ -20,8 +20,8 @@ function Profile() {
   }else{
 
       return (
-        <div className='profile-section'>
-            <div className='profile-img-con'>
+        <div className='profile-section' >
+            <div className='profile-img-con'> 
                     <img src={profileImg} width= "300px" height= "auto" className='profile-img'/>
             </div>
             <h3>{user? user.name : "Cargando.."}</h3>

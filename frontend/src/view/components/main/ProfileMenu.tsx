@@ -1,7 +1,6 @@
 import { AppContextIn } from '../../../interfaces/autInterface'
 import { useAuth } from '../../../context/AppContext'
 import profileImg from "../../../assets/profile.png"
-import { useEffect } from 'react'
 
 interface Props{
     pMenu: boolean
@@ -9,7 +8,7 @@ interface Props{
 
 function ProfileMenu({pMenu} : Props) {
 
-  const {logout, user, getProfile} = useAuth() as AppContextIn
+  const {logout, user} = useAuth() as AppContextIn
 
   if(!user || Object.keys(user).length == 0){
       return(

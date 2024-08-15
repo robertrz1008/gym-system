@@ -42,16 +42,21 @@ function AppPage() {
   }, []);
 
   return (
-    <div className="app-con">
+    <div 
+      onClick={() => ssetPMenut(false)}
+      className="app-con"
+    >
       <Toast ref={toast} position="bottom-right"/>
       {smashSreen && (<SmashSreen/>)}
         <Navbar 
               openDMenu={openDMenu}
               changePMenu={changePMenu}
         />
-        <ProfileMenu 
-              pMenu={pMenu}
-        />
+        <div onClick={(e) => e.stopPropagation() }>
+          <ProfileMenu 
+                pMenu={pMenu}
+          />
+        </div>
         <div className={!dbMinimixe? "app-layout": "app-db-minimixe"}>
             <Sidebar 
                   ChangeLaout={ChangeLaout}

@@ -6,17 +6,26 @@ import ClientTable from "../../../components/tables/ClientTable";
 import { useNavigate } from "react-router-dom";
 import { useAbm } from "../../../../context/StoreContext";
 import { StoreContextIn } from "../../../../interfaces/autInterface";
-import { useEffect } from "react";
+import { FiFilter } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import ClientSidebar from "../../../components/FiltersSidebar/ClientsFilters";
+
 
 function ClientPage() {
 
   const {getClients, getClientsByFilter} = useAbm() as StoreContextIn
+  const [showSidebar, setSidebar] = useState<boolean>(false);
+  const [isFilterList, setFilterList] = useState(false)
+
+  const closeSidebar = () => setSidebar(false)
 
   const navigate = useNavigate()
 
+  const onFilterList= () => setFilterList(true)
+
   function clientForm(){
     navigate("/client/form")
-  }
+  } 
 
   useEffect(() => {
     getClients()
@@ -30,23 +39,13 @@ function ClientPage() {
         </div>
         <div className='register-header'>
           <div className='tfSeach-con'>
-              
-            {/* <Input
-              onChange={(e) => {
-                getClientsByFilter(e.target.value)
-              }}
-              color="success"
-              id="input-with-icon-adornment"
-              startAdornment={
-                <InputAdornment position="start">
-                    <IoIosSearch/>
-                  </InputAdornment>
-                }
-            /> */}
+           
             <TextField
-                onChange={(e) =>
+                onChange={(e) => {
+                  setFilterList(false)
                   getClientsByFilter(e.target.value)
-                }
+                }}
+                autoFocus
                 id="outlined-start-adornment"
                 sx={{  width: '250px' }}
                 InputProps={{
@@ -57,15 +56,35 @@ function ClientPage() {
                 }}
                 size='small'
             />
+            <div 
+              style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}
+              className={`filter-con ${isFilterList? "filter-active": ""}`}
+              onClick={() => {
+                if(isFilterList){ //si el listado por filtro esta activo
+                  setFilterList(false)
+                  getClients()
+                  return 
+                }
+                setSidebar(true)
+              }}>
+              <FiFilter/>
+              <p>Filtro</p>
+            </div>
         </div> 
+        
           <button 
               onClick={() => clientForm()}
               className="btn btn-add"
           > 
-            Nuevo cliente
+            cliente
           </button>
         </div>
         <ClientTable/>
+        <ClientSidebar
+                showSidebar={showSidebar}
+                closeSidebar={closeSidebar}
+                onFilterList={onFilterList}
+        />
     </div>
   )
 }

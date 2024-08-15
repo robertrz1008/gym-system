@@ -18,7 +18,10 @@ function Navbar({openDMenu, changePMenu}: Props) {
         </div>
         
         <h1>Gimnacio</h1>
-        <div onClick={() => changePMenu()}>
+        <div onClick={(e) => {
+          e.stopPropagation()
+          changePMenu()
+        }}>
           <Profile />
         </div>
       </nav>

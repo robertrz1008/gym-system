@@ -4,6 +4,7 @@ import { useAbm } from "../../../context/StoreContext";
 import ModalDialog from "../main/ModalDialog";
 import DeleteProductDetailMsg from "../ModalDialog/DeleteProductDetail";
 import AmountTd from "../main/AmountTd";
+import { formatNumberWithDots } from "../../../utils/numbersUtils";
 
 
 export default function ProductDetailList() {
@@ -12,8 +13,8 @@ export default function ProductDetailList() {
 
     if(productDetail.length == 0){
         return (
-          <div className="sale-form-list-con">
-              <h3>NO hay Productos</h3>
+          <div className="sale-form-list-con list-void">
+              <h2>Vacio</h2>
           </div>
         )
       }else{
@@ -39,7 +40,7 @@ export default function ProductDetailList() {
                             amountValue={pro.amount}
                             proId={pro.id as number}
                         />
-                        <td className="td-price">{pro.subtotal}</td>
+                        <td className="td-price">{formatNumberWithDots(pro.subtotal)}</td>
                         <td className="sale-icon-con">
                           <div 
                             onClick={() => openModalDialog()}

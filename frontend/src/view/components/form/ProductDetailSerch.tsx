@@ -12,16 +12,13 @@ function ProductDetailSerch() {
 
   return (
     <div className='product-detail-con'>
-      {/* <div className='pd-title-con'>
-          <h3>Productos en Stock</h3>
-      </div> */}
         <div className="sale-search-con">
             <TextField
                 onChange={(e) =>
                   getProductsByFilter(e.target.value)
                 }
                 id="outlined-start-adornment"
-                sx={{ m: 1, width: '100%' }}
+                sx={{ width: '95%' }}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">
                   <IoIosSearch/>
@@ -30,6 +27,9 @@ function ProductDetailSerch() {
                 }}
                 size='small'
             />
+        </div>
+        <div style={{ marginTop: "10px"}} className='title-con'>
+            <h4>Productos en stock</h4>
         </div>
         <ProductList />
     </div>

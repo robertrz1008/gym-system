@@ -1,7 +1,7 @@
 import {useContext, createContext, useState, useEffect} from "react"
-import { contexArg, Client, Product, Equipment, ProductSale } from "../interfaces/autInterface"
-import { deleteClientsRequest, getClientsByFilterRequest, getClientsRequest } from "../api/clientRequest"
-import { deleteProductRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
+import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams } from "../interfaces/autInterface"
+import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedRequest, getClientsRequest } from "../api/clientRequest"
+import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
 import { createProductDetailRequest, createSaleRequest, udpateSaleTotalRequest } from "../api/saleRequest"
 
@@ -21,6 +21,7 @@ export default function StoreContextProvider({children}: contexArg){
 
     const [clients, setClients] = useState<Client[]>([])
     const [product, setProducts] = useState<Array<Product>>([])
+    const [categories, setCategories] = useState<Category[]>([])
     const [clientModify, setClientModify] = useState<Client>() 
     const [isCliUpdateMode, setCliUpdateMode] = useState(false)
     const [showModalD, setShowModalForm] = useState(false)
@@ -32,6 +33,7 @@ export default function StoreContextProvider({children}: contexArg){
     const [productDetail, setProductDetail] = useState<ProductSale[]>([])
     const [isBtnDisabled, setBtnDisabled] = useState(true)
     const [total, setTotal] = useState(0)
+
 
     useEffect(() => {
       sumTotal()
@@ -77,13 +79,31 @@ export default function StoreContextProvider({children}: contexArg){
           console.log(error)
         }
     }
+    async function clientLisded(clientParams: ClientsParam){
+      try {
+        const response = await getClientsListedRequest(clientParams)
+        setClients(response.data)
+      } catch (error) {
+        
+      }
+    }
+
     // PRODUCTS
     async function getProductsList(){
       try {
         const response = await getProductsRequest()
         setProducts(response.data)
+        console.log(response.data)
       } catch (error) {
         console.log(error)
+      }
+    }
+    async function getCategoriesList(){
+      try {
+        const response = await getCategoriesRequest()
+        setCategories(response.data)
+      } catch (error) {
+        console.log(error) 
       }
     }
     const setProductUpdate = (pro: Product)  => setproModify(pro)
@@ -101,6 +121,16 @@ export default function StoreContextProvider({children}: contexArg){
       const response = await getProductsByFilterRequest(value)
       setProducts(response.data)
     }
+    async function productListed(proP: ProductParams){
+      try {
+        const response = await getProductListedRequest(proP)
+        setProducts(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+
     // EQUIPAMENTS
     async function getEquipmentsList(){
       try {
@@ -125,8 +155,8 @@ export default function StoreContextProvider({children}: contexArg){
       const response = await getEquipamentsByFilterRequest(value)
       setEquipments(response.data)
     }
+
     // product Sale
-    
     function sumTotal(){
       const newTotal = productDetail.reduce((con, el) => con + el.subtotal, 0)
       setTotal(newTotal)
@@ -144,7 +174,6 @@ export default function StoreContextProvider({children}: contexArg){
         });
       });
     }
-  
     function addProductAmout(id: number){
       setProductDetail((detailPro) => {
         return detailPro.map((pro) => {
@@ -164,7 +193,6 @@ export default function StoreContextProvider({children}: contexArg){
       sumTotal()
       console.log(productDetail)
     }
-  
     function addProductSale(pr: ProductSale){
       if(productDetail.some((data) => data.id === pr.id)){
         console.log("mismo producto")
@@ -213,8 +241,8 @@ export default function StoreContextProvider({children}: contexArg){
 
     return (
         <appContext.Provider value={{
-            clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter,
-            product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter,
+            clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter, clientLisded,
+            product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter, getCategoriesList, categories, productListed,
             equipments, getEquipmentsList, setEquipmentUpdate, isEquiUpdateMode, equiModify, setEquipmentMode, getEquipmentsByFilter, deleteEquipment,
             productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero,
             openModalDialog, closeModalDialog, showModalD, isBtnDisabled

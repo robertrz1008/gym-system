@@ -2,23 +2,35 @@ import { useEffect, useState } from 'react'
 import { useAbm } from '../../../context/StoreContext'
 import { StoreContextIn } from '../../../interfaces/autInterface'
 import { TextField } from '@mui/material'
+import { getProductsRequest } from '../../../api/productRequest'
+import { CgLogIn } from 'react-icons/cg'
 
 interface Props{
     amountValue: number
     proId: number
 }
 
+
+
 function AmountTd({amountValue, proId}: Props) {
 
-  const {changeProductAmount, productDetail} = useAbm() as StoreContextIn
+  const {changeProductAmount, productDetail, product} = useAbm() as StoreContextIn
 
   const [amount, setAmount] = useState<number>(0)
+  const [productStock, setProductStock] = useState<number>(0)
+
+  function getProStock() {
+    const ps = product.filter(pr => pr.id == proId)
+
+    setProductStock(ps[0].stock)
+  }
 
   useEffect(() => {
     setAmount(amountValue)
   }, [])
   useEffect(() => {
     setAmount(amountValue)
+    getProStock()
   }, [productDetail])
 
   useEffect(() => {
@@ -28,7 +40,13 @@ function AmountTd({amountValue, proId}: Props) {
   return (
     <td>
     <TextField
-          onChange={(e) => setAmount(parseInt(e.target.value))}
+          onChange={(e) => {
+            const val = parseInt(e.target.value)
+            if( val >= productStock){ // si la cantidad ingresada es mayor al stock del producto referenciado
+              e.target.value = ""+productStock // el valor de la entrada sera igual al stock
+            }
+            setAmount(parseInt(e.target.value))
+          }}
           id="outlined-start-adornment"
           sx={{ m: 1, width: '70px' }}
           type="number"

@@ -7,6 +7,7 @@ import DeleteProductMsg from "../ModalDialog/DeleteProductMsg";
 import ProductImage from "../rowImage/ProductImage";
 import { useEffect } from "react";
 import { Tooltip } from 'react-tooltip'
+import { formatNumberWithDots } from "../../../utils/numbersUtils";
 
 
 function ProductTable() {
@@ -17,7 +18,6 @@ function ProductTable() {
 
     useEffect(() => {
         getProductsList()
-        console.log(product)
     }, [])
 
   return (
@@ -28,7 +28,7 @@ function ProductTable() {
                     <th className="td-id">#</th>
                     <th>imagen</th>
                     <th>Descripción</th>
-                    <th className="td-price">precioConpra</th>
+                    <th className="td-price">Categoría</th>
                     <th className="td-price">precioVenta</th>
                     
                     <th className='td-icon'>Stock</th>
@@ -50,7 +50,7 @@ function ProductTable() {
                                     
                                     <ProductImage id={data.id_image}/>
                                     <td>{data.description}</td>
-                                    <td className="td-price">{data.price_compra}</td>
+                                    <td className="td-price">{data.category_name}</td>
                                     <td className="td-price">{data.price_venta}</td>
                                     <td className="td-id">{data.stock}</td>
                                     <td 

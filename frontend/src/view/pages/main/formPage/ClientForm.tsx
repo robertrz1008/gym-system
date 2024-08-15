@@ -55,7 +55,7 @@ function ClientForm() {
       showToasSuccess("Cliente modificado")
       clear()
     } catch (error) {
-      
+      console.log(error)
     }
   }
   
@@ -81,7 +81,7 @@ function ClientForm() {
           dni: cin.trim()
         })
     }else{
-        updateClient({
+        updateClient({ 
           id: clientModify.id,
           name: name.trim(),
           telephone: tel.trim(),
@@ -102,55 +102,61 @@ function ClientForm() {
           }}
           className="register-form"
         >
-            <div className="title-con">
-                <h3 className="subtitle">Datos del cliente</h3>
-            </div>
             <div className="form-con">
-                <TextField 
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
-                  sx={{ width:"100%"}}
-                  error={isNameEmpty}
-                  helperText={isNameEmpty ? "El nombre es requerido" : ""}
-                  id="standard-error-helper-text"
-                  label="Nombre y Apellido" 
-                  variant="outlined" 
-                />
-                <TextField 
-                  onChange={(e) => setTel(e.target.value)}
-                  value={tel}
-                  sx={{ marginTop: 2, width:"100%"}}
-                  id="Telefono" 
-                  label="Telefono" 
-                  variant="outlined" 
-                />
-                <TextField 
-                  onChange={(e) => setCin(e.target.value)}
-                  value={cin}
-                  sx={{ marginTop: 2, width:"100%"}}
-                  id="DNI" 
-                  label="DNI" 
-                  variant="outlined" 
-                />
-            </div>
-            
-            <div className="btn-con">
-                <button 
-                  onClick={() => {
-                    navigate("/clients")
-                    clear()
-                  }}
-                  type="reset"
-                  className="btn btn-res"
-                > 
-                  Cancelar
-                </button>
-                <button
-                  type="submit" 
-                  className="btn btn-add"
-              > 
-                {"Guardar "}<FiDatabase/>
-              </button>
+                <div className="pd-title-con">
+                    <h3 className="subtitle">Datos del Cliente</h3>
+                </div>
+                {/* entradas de textos */}
+                <div className="image-form-con">
+                    <TextField 
+                      onChange={(e) => setName(e.target.value)}
+                      value={name}
+                      sx={{ width:"100%"}}
+                      size="small"
+                      error={isNameEmpty}
+                      helperText={isNameEmpty ? "El nombre es requerido" : ""}
+                      id="standard-error-helper-text"
+                      label="Nombre y Apellido" 
+                      variant="outlined" 
+                    /> 
+                    <TextField 
+                      onChange={(e) => setTel(e.target.value)}
+                      size="small"
+                      value={tel}
+                      sx={{ marginTop: 2, width:"100%"}}
+                      id="Telefono" 
+                      label="Telefono" 
+                      variant="outlined" 
+                    />
+                    <TextField 
+                      onChange={(e) => setCin(e.target.value)}
+                      size="small"
+                      value={cin}
+                      sx={{ marginTop: 2, width:"100%"}}
+                      id="DNI" 
+                      label="DNI" 
+                      variant="outlined" 
+                    />
+                </div>
+
+                <div className="btn-con">
+                  <button 
+                    onClick={() => {
+                      navigate("/clients")
+                      clear()
+                    }}
+                    type="reset"
+                    className="btn btn-res"
+                  > 
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit" 
+                    className="btn btn-add"
+                  > 
+                    Guardar 
+                  </button>
+                </div>
             </div>
         </form>
     </div>

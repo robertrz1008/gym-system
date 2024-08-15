@@ -15,6 +15,7 @@ import EquipmentForm from './view/pages/main/formPage/EquipmenForm';
 import SalePage from './view/pages/main/transactions/SalePage';
 import PayPage from './view/pages/main/transactions/PayPage';
 import SaleSuccess from './view/pages/main/transactions/SaleSuccess';
+import PaymentSuccess from './view/pages/main/transactions/PaymentSuccess';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
                         <Route path='Sale' element={<SalePage/>}/>
                         <Route path='Sale/success/:monto' element={<SaleSuccess/>}/>
                         <Route path='Pay' element={<PayPage/>}/>
+                        <Route path='Pay/success/:monto' element={<PaymentSuccess/>}/>
                     </Route>
                 </Route>
           </Routes>

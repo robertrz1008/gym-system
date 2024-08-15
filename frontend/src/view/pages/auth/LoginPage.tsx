@@ -44,13 +44,13 @@ function LoginPage() {
                     onSubmit={ handleSubmit(submit) }
                     className="auth-form-con"
                 >
-
                     <h3 >Iniciar Seción</h3>
-
                     <div className="auth-form-body">
                         <h4 className="for-parr">Correo</h4>
                         <input 
-                            className="auth-input" 
+                            style={{height:"40px"}}
+                            autoFocus
+                            className="auth-input at" 
                             type="email" 
                             {...register("email", {required: true})}
                             placeholder="Correo"
@@ -61,9 +61,9 @@ function LoginPage() {
                             )
                         }
                         <h4 className="for-parr">Contraseña</h4>
-                        <input 
-                        onFocus={(e) => console.log("true")}
+                        <input
                             className="auth-input" 
+                            style={{height:"40px"}}
                             type="password" 
                             {...register("password", {required: true})}
                             placeholder='Contraseña'

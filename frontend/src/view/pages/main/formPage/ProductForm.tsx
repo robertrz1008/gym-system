@@ -1,11 +1,10 @@
 import { TextField } from "@mui/material"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { FiDatabase } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { useAbm } from "../../../../context/StoreContext";
-import {  AppContextIn, Product, StoreContextIn } from "../../../../interfaces/autInterface";
+import {  AppContextIn, Category, Product, StoreContextIn } from "../../../../interfaces/autInterface";
 import { useNavigate } from "react-router-dom";
-import { changeProductImgRequest, createProductRequest, updateProductRequest } from "../../../../api/productRequest";
+import { changeProductImgRequest, createProductRequest, getCategoryByIdRequest, updateProductRequest } from "../../../../api/productRequest";
 import { createImagesRequest, deleteImageRequest, getImageByIdRequest } from "../../../../api/clientRequest";
 import { openEditor } from "react-profile";
 import "react-profile/themes/dark.min.css";
@@ -14,6 +13,10 @@ import DeleteProductImg from "../../../components/ModalDialog/DeleteImageMsg";
 import { FaRegImage } from "react-icons/fa";
 import ImageForm from "../../../components/rowImage/ImageForm";
 import { useAuth } from "../../../../context/AppContext";
+import CategorySearch from "../../../components/ModalForm/CategorySearch";
+import { FaSearch } from "react-icons/fa";
+import { TbNumber2Small } from "react-icons/tb";
+
 
 function ProductForm() {
 
@@ -29,6 +32,7 @@ function ProductForm() {
   const [stock, setStock] = useState(0)
   const [isDecriptionEmp, setDecriptionEmp] = useState(false)
   const [ispriceVentaEmp, setPriceVentaEmp] = useState(false)
+  const [categorySelected, setCategorySelected] = useState<Category | null>()
   //image state
   const [image, setImage] = useState<string>()
   const [file, setFile] = useState<File | null>()
@@ -45,6 +49,7 @@ function ProductForm() {
     setDescription("")
     setPriceCompra(0)
     setPriceVenta(0)
+    setCategorySelected(null)
   }
 
     //imagen
@@ -62,6 +67,8 @@ function ProductForm() {
       fileInputRef.current.click();
     }
   }
+  //para la categoria
+  const categorySelect = (ctg: Category) => setCategorySelected(ctg)
   //enviar la imagen editada al formulario
   async function selectHandle(e: ChangeEvent<HTMLInputElement>){
     const selectedFile = e.target.files?.[0]
@@ -103,7 +110,7 @@ function ProductForm() {
       //cambiamos el id_image del objeto reciene por el id de la imagen nueva
       await changeProductImgRequest(response.data, productId as number)
 
-      if(proModify.id_image !=3){
+      if(proModify.id_image !=1){
         //se elimina si la imagen reemplazada no tiene como id 3
         await deleteImageRequest(proModify.id_image as number)
       }
@@ -125,12 +132,21 @@ function ProductForm() {
     try {
       await changeProductImgRequest(3, proModify.id as number)
       await deleteImageRequest(proModify.id_image as number)
-      getImage(3)
+      getImage(1)
     } catch (error) {
       console.log(error)
     }
   }
 
+  async function getProductCategory(id: number){
+    try {
+      const res = await getCategoryByIdRequest(id)
+      setCategorySelected(res.data[0])
+      console.log(res.data[0])
+    } catch (error) {
+      console.log(error) 
+    }
+  }
 
   async function createProduct(pr: Product){
     try {
@@ -151,11 +167,11 @@ function ProductForm() {
   }
   async function updatePro(pro: Product){
     try {
+      console.log("modificando")
       await updateProductRequest(pro)
       if(!fileURL){
         navigate("/products")
         showToasSuccess("Producto modificado")
-        console.log("nos se ha cambiado foto")
         clear()
         return
       }
@@ -184,10 +200,11 @@ function ProductForm() {
   function handleSubmit(){
     if(!validateTf()) return
 
-    const pro = {
+    const pro: Product = {
         description: description.trim(),
         price_compra: priceCompra,
         price_venta: priceVenta,
+        id_category: categorySelected?.id,
         stock: stock
     }
     if(!isProUpdateMode){
@@ -207,6 +224,7 @@ function ProductForm() {
       setPriceVenta(proModify.price_venta)
       getImage(proModify.id_image as number)
       setStock(proModify.stock)
+      getProductCategory(proModify.id_category)
 
       if(proModify.id_image == 3){
         setBtnDisabled(true)
@@ -269,47 +287,61 @@ function ProductForm() {
                   </div>
                 </div>
 
+                {/* campos del formulario */}
                 <div className="texfield-form-con">
-                  <TextField 
-                    onChange={(e) => setDescription(e.target.value)}
-                    sx={{ width:"100%"}}
-                    value={description}
-                    error={isDecriptionEmp}
-                    helperText={isDecriptionEmp ? "La description es requerido" : ""}
-                    id="standard-error-helper-text"
-                    label="Descripción" 
-                    variant="outlined" 
-                  />
-                  <TextField 
-                  type="number"
-                  onChange={(e) => setPriceCompra(parseFloat(e.target.value))}
-                  sx={{ marginTop: 2, width:"100%"}}
-                  value={priceCompra}
-                  id="Telefono" 
-                  label="PrecioCompra" 
-                  variant="outlined" 
-                />
-                 
-                <TextField 
-                  type="number"
-                  onChange={(e) => setPriceVenta(parseFloat(e.target.value))}
-                  sx={{ marginTop: 2, width:"100%"}}
-                  value={priceVenta}
-                  error={ispriceVentaEmp}
-                  helperText={ispriceVentaEmp ? "El precioVenta es requerido" : ""}
-                  id="DNI" 
-                  label="PrecioVenta" 
-                  variant="outlined" 
-                />
-                <TextField 
-                  type="number"
-                  onChange={(e) => setStock(parseFloat(e.target.value))}
-                  sx={{ marginTop: 2, width:"100%"}}
-                  value={stock}
-                  id="DNI" 
-                  label="Stock" 
-                  variant="outlined" 
-                />
+                  
+                    <TextField //descripcion
+                      onChange={(e) => setDescription(e.target.value)}
+                      sx={{ width:"100%"}}
+                      value={description}
+                      error={isDecriptionEmp}
+                      helperText={isDecriptionEmp ? "La description es requerido" : ""}
+                      id="standard-error-helper-text"
+                      label="Descripción" 
+                      variant="outlined" 
+                    />
+
+                    <div //categoria
+                      style={{marginTop: "10px"}}
+                      className="client-input-con">
+                        <div className="client-field">
+                          {
+                            !categorySelected? (<p>Seleccionar</p>): (<p>{categorySelected.description}</p>)
+                          }
+                        </div>
+                        <button onClick={() => openModalDialog()} className="btn btn-search"><FaSearch/></button>
+                    </div>
+                    
+                    <TextField //costo de compra
+                      type="number"
+                      onChange={(e) => setPriceCompra(parseFloat(e.target.value))}
+                      sx={{ marginTop: 2, width:"100%"}}
+                      value={priceCompra}
+                      id="Telefono" 
+                      label="PrecioCompra" 
+                      variant="outlined" 
+                    />
+                    <TextField //costo de vetna
+                      type="number"
+                      onChange={(e) => setPriceVenta(parseFloat(e.target.value))}
+                      sx={{ marginTop: 2, width:"100%"}}
+                      value={priceVenta}
+                      error={ispriceVentaEmp}
+                      helperText={ispriceVentaEmp ? "El precioVenta es requerido" : ""}
+                      id="DNI" 
+                      label="PrecioVenta" 
+                      variant="outlined" 
+                    />
+                  
+                    <TextField //stock
+                      type="number"
+                      onChange={(e) => setStock(parseFloat(e.target.value))}
+                      sx={{ marginTop: 2, width:"100%"}}
+                      value={stock}
+                      id="DNI" 
+                      label="Stock" 
+                      variant="outlined" 
+                    />
                 </div> 
 
                 <div className="btn-con">
@@ -335,6 +367,11 @@ function ProductForm() {
                     Guardar
                     </button>
                 </div>
+                <ModalDialog>
+                    <CategorySearch
+                        catgorySelect={categorySelect}
+                    />
+                </ModalDialog>
             </div>
 
             <br />

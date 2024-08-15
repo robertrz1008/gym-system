@@ -1,8 +1,9 @@
-import { Client } from "../interfaces/autInterface";
+import { Client, ClientsParam } from "../interfaces/autInterface";
 import axios from "./axios"
 
 export const getClientsRequest = () => axios.get("/getClients")
 export const getClientsByFilterRequest = (filter: string) => axios.get(`/getClients/${filter}`)
+export const getClientsListedRequest = (clientParam: ClientsParam) => axios.post(`/getClientsListed`, clientParam)
 export const createClientsRequest = (client: Client) => axios.post("/createClient", client)
 export const deleteClientsRequest = (id: number) => axios.delete(`/deleteClient/${id}`)
 export const updateClientsRequest = (client: Client) => axios.put(`/updateClient`, client)

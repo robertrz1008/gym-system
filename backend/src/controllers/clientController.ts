@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import connectdb from "../db/conectiondb";
-import { CustomRequest } from "../utils/Interfaces";
+import { ClientFilter, CustomRequest } from "../utils/Interfaces";
 import path from "path"
 import fs from "fs"
 import { getElementByNumber } from "../utils/seachFile";
@@ -69,7 +69,6 @@ export const updateClientRequest = async (req: Request, res: Response) => {
     }
 }
 
-
 export const getImagesById = async (req: Request, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
@@ -122,6 +121,7 @@ export const changeImage = async (req: CustomRequest, res: Response) => {
         console.log(error)
     }
 }
+
 export const deleteImage = async (req: Request, res: Response) => {
     try {
         console.log("eliminando producto")
@@ -129,6 +129,37 @@ export const deleteImage = async (req: Request, res: Response) => {
         await pgClient.query("DELETE FROM images WHERE id = $1", [req.params.id])
         pgClient.release()
         res.send("mensaje eliminado")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getClientsListedRequest = async (req: Request, res: Response) => {
+    console.log(req.body)
+    function sqlQuery(filter: ClientFilter): string{
+        function setOrderBy(n: number) {
+            if(n == 1) return "desc"
+            if(n == 2) return "asc"
+        }
+
+        let script = `select * from clients  where name like '%%' `
+
+        if(filter.memberships){
+            script += `and id_status = 1 `
+        }
+        if(filter.orderByName){
+            script += ` order by name ${setOrderBy(filter.orderByName)}`
+        }
+        console.log(script)
+        return script
+    }
+
+    try {
+        const pgClient = await connectdb.connect()
+        const response = await pgClient.query(sqlQuery(req.body))
+        pgClient.release()
+        res.json(response.rows)
+        
     } catch (error) {
         console.log(error)
     }

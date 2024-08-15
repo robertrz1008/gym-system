@@ -43,7 +43,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #222f42;
+    background-color: #222f42;  
+    transition: all 0.2s ease; 
 }
 .menu-profile-con{
     width: 100%;
@@ -52,6 +53,7 @@
     align-items: center;
     margin-top: 10px;
     color: white;
+    transition: all 0.2s ease; 
 }
 .menu-profile-img-con{
     width: 60px;

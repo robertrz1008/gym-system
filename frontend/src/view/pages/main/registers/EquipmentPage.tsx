@@ -1,5 +1,5 @@
 import "../../../../css/Register.css"
-import { Input, TextField} from '@mui/material'
+import { TextField} from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { IoIosSearch } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,7 @@ function EquipmentPage() {
                   onChange={(e) =>
                     getEquipmentsByFilter(e.target.value)
                   }
+                  autoFocus
                   id="outlined-start-adornment"
                   sx={{  width: '250px' }}
                   InputProps={{

@@ -16,3 +16,17 @@ export interface httpRuote {
     res: Response,
     next: NextFunction
 }
+
+export interface ClientFilter{
+    memberships: boolean
+    orderByName: number
+}
+
+export interface ProductParams{
+    isStock: boolean
+    categoryId: number | null,
+    fromPrice: number,
+    toPrice: number,
+    orderBy:  number,
+    order: number
+}

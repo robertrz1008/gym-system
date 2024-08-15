@@ -9,11 +9,19 @@ export interface User{
     email: string,
     password: string
 }
+export interface Category{
+    id?: int
+    description: string 
+}
 export interface Client{
     id?: number,
     name: string,
     telephone: string,
     dni: string
+}
+export interface ClientsParam{
+    memberships: boolean
+    orderByName: number | null
 }
 export interface Product{
     id?: number,
@@ -21,8 +29,19 @@ export interface Product{
     price_compra: double,
     price_venta: double,
     id_image?: number
+    category_name?: string,
+    id_category: number
     stock: number
 }
+export interface ProductParams{
+    isStock: boolean 
+    categoryId: number | null,
+    fromPrice: number,
+    toPrice: number,
+    orderBy:  number | null,
+    order: number
+}
+
 export interface ProductSale{
     id?: number,
     description: string,
@@ -42,7 +61,7 @@ export interface PaymentMembership{
     id_client: number,
     id_pay_option: number,
     pay_date: string,
-    expiration_date: string
+    expiration_date: string | null
 }
 export interface PaymentOptions{
     name: string,
@@ -86,6 +105,7 @@ export interface StoreContextIn{
     setClientUpdate: (cli: Client) => void
     isCliUpdateMode: boolean,
     cliUPdateMode: (val: boolean) => void
+    clientLisded: (cli: ClientsParam) => void
     openModalDialog: () => void
     closeModalDialog: () => void
     showModalD: boolean
@@ -93,11 +113,14 @@ export interface StoreContextIn{
     product: Array<Product>
     getProductsList: () => void
     getProductsByFilter: (val: string) => void
+    categories: Category[]
+    getCategoriesList: () => void
     proModify: Product
     isProUpdateMode: boolean
     setProductMode: (val: boolean) => void
     setProductUpdate: (pro: Product) => void
     deleteProduct: (id: number) => void
+    productListed: (proP: ProductParams) => void
     equipments: Equipment[]
     isEquiUpdateMode: boolean
     equiModify: Equipment
