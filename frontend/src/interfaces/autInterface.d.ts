@@ -19,6 +19,14 @@ export interface Client{
     telephone: string,
     dni: string
 }
+export interface clientMembership{
+    id: number,
+    name: string,
+    datePay: string
+    dateExpired: string
+    status: string
+    id_status: number
+}
 export interface ClientsParam{
     memberships: boolean
     orderByName: number | null
@@ -106,6 +114,10 @@ export interface StoreContextIn{
     isCliUpdateMode: boolean,
     cliUPdateMode: (val: boolean) => void
     clientLisded: (cli: ClientsParam) => void
+    members: clientMembership[]
+    getClientsMembership: () => void
+    getClientMembershipByFIlter: (filter: string) => void
+    expireMembership: () => void
     openModalDialog: () => void
     closeModalDialog: () => void
     showModalD: boolean

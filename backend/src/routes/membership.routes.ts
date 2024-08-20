@@ -7,6 +7,6 @@ const memberRouter = Router()
 
 memberRouter.get("/getPayMembership", authRequired, getPayOptipsRequest)
 memberRouter.post("/createPayMembership", authRequired, createPaymetRequest)
-memberRouter.post("/expireMembership", authRequired, expireMembershipRequest)
+memberRouter.put("/expireMembership/:id", authRequired, expireMembershipRequest)
 
 export default memberRouter

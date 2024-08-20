@@ -1,1 +1,0 @@
-const menuProfile = document.getElementById("")

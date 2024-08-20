@@ -2,45 +2,45 @@ import "../../../../css/Register.css"
 import { TextField} from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { IoIosSearch } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { useAbm } from "../../../../context/StoreContext";
-import {  AppContextIn, StoreContextIn } from "../../../../interfaces/autInterface";
-import { useEffect } from "react";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
-import EquipmentTable from "../../../components/tables/EquipmentTable";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import EquipmentReport from "../../../../PDF/reports/EquipmentReport";
-import UploadButton from "../../../components/reusable/UploadButton";
 import { Tooltip } from 'react-tooltip'
-import { useAuth } from "../../../../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import MembershipTable from "../../../components/tables/MembershipTable";
+import { useEffect } from "react";
+import { useAbm } from "../../../../context/StoreContext";
+import { StoreContextIn } from "../../../../interfaces/autInterface";
+
+function isMAy(a: Date, b:Date){
+  if(a > b){
+    return "Es mayor"
+  }else{
+    return "es menor"
+  }
+}
 
 
-function EquipmentPage() { 
-
-
-  const { cliUPdateMode, getEquipmentsByFilter, equipments} = useAbm() as StoreContextIn
-  const {showToasSuccess} = useAuth() as AppContextIn
-
+function MembershipList() {
 
   const navigate = useNavigate()
-
+  const {getClientMembershipByFIlter} = useAbm() as StoreContextIn
 
   useEffect(() => {
-    cliUPdateMode(false)
-  }, [])
-
+  const a = new Date(2024, 10, 13)
+  const b = new Date()
+  console.log(isMAy(a, b))
+}, [])
 
   return (
-    <div className='main-page'>
+    <div  className="main-page">
         <div className="title-con">
-            <h3 className="subtitle">Equipos</h3>
+            <h3 className="subtitle">Membresias</h3>
         </div>
         <div className='register-header'>
           <div className='tfSeach-con'>
             <TextField
-                  onChange={(e) =>
-                    getEquipmentsByFilter(e.target.value)
-                  }
+                  onChange={(e) => {
+                    getClientMembershipByFIlter(e.target.value)
+                  }}
                   autoFocus
                   id="outlined-start-adornment"
                   sx={{  width: '250px' }}
@@ -56,25 +56,26 @@ function EquipmentPage() {
 
           <div style={{width: "180px", display: "flex", justifyContent:"space-between"}}>
           <a className="my-export">
-          <PDFDownloadLink document={<EquipmentReport equipments={equipments}/>} fileName="equipos-reporte">
+          {/* <PDFDownloadLink document={<EquipmentReport equipments={equipments}/>} fileName="equipos-reporte">
               <div onClick={() => {
                 setTimeout(() => {showToasSuccess("Reporte generado")}, 200);
               }}><UploadButton/></div>
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
           </a>
           <Tooltip anchorSelect=".my-export" place="bottom">Exportar</Tooltip>
 
           <button 
-              onClick={() => navigate("/Equipments/form")}
+              onClick={() => navigate("/Pay")}
               className="btn btn-add"
           > 
-             + Equipo
+             Registrar
           </button>
           </div>
         </div>
-        <EquipmentTable/>
+
+        <MembershipTable/>
     </div>
   )
 }
 
-export default EquipmentPage
+export default MembershipList

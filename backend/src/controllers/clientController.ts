@@ -11,16 +11,17 @@ type Image ={
     data: string
 }
 
-export const getClientsRequest = async (_req: Request, res: Response) => {
+export const getClientsRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        const response = await pgClient.query("select * from clients")
+        const response = await pgClient.query(`select * from clients where id_user = '${req.user.id}' order by id asc`)
         pgClient.release()
         res.json(response.rows)
     } catch (error) {
         console.log(error)
     }
 }
+
 export const getClientByFilterRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
@@ -160,6 +161,98 @@ export const getClientsListedRequest = async (req: Request, res: Response) => {
         pgClient.release()
         res.json(response.rows)
         
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getClientMebersRequest = async (req: CustomRequest, res: Response) => {
+        try {
+            const pgClient = await connectdb.connect()
+            const query = `
+              SELECT 
+    cli.id, 
+    cli.name, 
+    pm.pay_date AS "datePay", 
+    pm.expiration_date AS "dateExpired", 
+    cs.id AS "id_status",
+    cs.description AS "status"
+FROM 
+    clients AS cli
+JOIN 
+    client_status AS cs 
+    ON cli.id_status = cs.id
+JOIN 
+    payments_membership AS pm 
+    ON pm.id_client = cli.id
+JOIN 
+    (
+        SELECT 
+            id_client, 
+            MAX(pay_date) AS max_pay_date
+        FROM 
+            payments_membership
+        GROUP BY 
+            id_client
+    ) AS last_payment 
+    ON pm.id_client = last_payment.id_client 
+    AND pm.pay_date = last_payment.max_pay_date
+WHERE 
+    pm.id_pay_option = 1 
+    AND cli.id_user = ${req.user.id}
+ORDER BY 
+    pm.pay_date DESC;
+
+            `
+            const response = await pgClient.query(query)
+            pgClient.release() 
+            res.json(response.rows)
+        } catch (error) {
+            console.log(error)
+        }
+}  
+export const getClientMebersByFilterRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const query = `
+          SELECT 
+            cli.id, 
+            cli.name, 
+            pm.pay_date AS "datePay", 
+            pm.expiration_date AS "dateExpired", 
+            cs.id AS "id_status",
+            cs.description AS "status"
+            FROM 
+            clients AS cli
+            JOIN 
+            client_status AS cs 
+            ON cli.id_status = cs.id
+            JOIN 
+            payments_membership AS pm 
+            ON pm.id_client = cli.id
+            JOIN 
+            (
+                SELECT 
+                    id_client, 
+                    MAX(pay_date) AS max_pay_date
+                FROM 
+                    payments_membership
+                GROUP BY 
+                    id_client
+            ) AS last_payment 
+            ON pm.id_client = last_payment.id_client 
+            AND pm.pay_date = last_payment.max_pay_date
+            WHERE 
+            pm.id_pay_option = 1 
+            AND cli.id_user = ${req.user.id}
+            AND cli.name ilike '%${req.params.filter}%'
+            ORDER BY 
+            pm.pay_date DESC;
+
+        `
+        const response = await pgClient.query(query)
+        pgClient.release() 
+        res.json(response.rows)
     } catch (error) {
         console.log(error)
     }

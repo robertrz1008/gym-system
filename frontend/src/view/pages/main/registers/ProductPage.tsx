@@ -5,15 +5,23 @@ import { IoIosSearch } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useAbm } from "../../../../context/StoreContext";
 import { FiFilter } from "react-icons/fi";
-import { Category, StoreContextIn } from "../../../../interfaces/autInterface";
+import { AppContextIn, Category, StoreContextIn } from "../../../../interfaces/autInterface";
 import { useEffect, useState } from "react";
 import ProductTable from "../../../components/tables/ProductTable";
 import ProductSidebar from "../../../components/FiltersSidebar/ProductFilter";
 import { getCategoriesRequest } from "../../../../api/productRequest";
+import {PDFDownloadLink} from "@react-pdf/renderer"
+import ProductsPdf from "../../../../PDF/reports/ProductReport";
+import UploadButton from "../../../components/reusable/UploadButton";
+import { useAuth } from "../../../../context/AppContext";
+import { Tooltip } from 'react-tooltip'
+
 
 function ProductPage() {
 
-  const { cliUPdateMode, getProductsByFilter, getProductsList} = useAbm() as StoreContextIn
+  const { cliUPdateMode, getProductsByFilter, getProductsList, product} = useAbm() as StoreContextIn
+  const {showToasSuccess} = useAuth() as AppContextIn
+
 
   const [showSidebar, setSidebar] = useState<boolean>(false);
   const [categoriesParam, setCategorieParam] = useState<Category[]>([])
@@ -72,6 +80,7 @@ function ProductPage() {
               }}
               size='small'
             />
+            {/* filtro */}
             <div 
               style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}
               className={`filter-con ${isFilterList? "filter-active": ""}`}
@@ -87,13 +96,27 @@ function ProductPage() {
               <p>Filtro</p>
             </div>
         </div>
-        
-          <button 
-              onClick={() => clientForm()}
-              className="btn btn-add"
-          > 
-            Nuevo Producto
-          </button>
+
+         
+          <div style={{width: "180px", display: "flex", justifyContent:"space-between"}}>
+              <a className="my-export">
+              <PDFDownloadLink document={<ProductsPdf product={product}/>} fileName="productos-reporte">
+                  <div onClick={() => {
+                    setTimeout(() => {showToasSuccess("Reporte generado")}, 200);
+                  }}>
+                    <UploadButton/>
+                  </div>
+              </PDFDownloadLink>
+              </a>
+              <Tooltip anchorSelect=".my-export" place="bottom">Exportar</Tooltip>
+              <button 
+                  onClick={() => clientForm()}
+                  className="btn btn-add"
+              > 
+                + Producto
+              </button>
+          </div>
+          
         </div>
         <ProductTable/>
         <ProductSidebar

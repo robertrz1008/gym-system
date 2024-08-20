@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import connectdb from "../db/conectiondb";
 import { CustomRequest } from "../utils/Interfaces";
 
-export const getEquimentsRequest = async (_req: Request, res: Response) => {
+export const getEquimentsRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        const response = await pgClient.query("select * from equipments order by id")
+        const response = await pgClient.query("select * from equipments where id_user =$1 order by id", [req.user.id])
         pgClient.release()
         res.json(response.rows)
     } catch (error) {
@@ -56,7 +56,11 @@ export const changeEquipmentImgRequest = async (req: CustomRequest, res: Respons
 export const deleteEquipmentRequest = async (req: Request, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
+        const equipment = await pgClient.query("select * from equipments where id = $1", [req.params.id])
+        const par = equipment.rows[0].id_image
         await pgClient.query("DELETE FROM equipments WHERE id = $1", [req.params.id])
+        await pgClient.query("DELETE FROM images wHERE id = $1", [par])
+        
         pgClient.release()
         res.json({msg: "producto eliminado"})
 

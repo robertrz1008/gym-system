@@ -5,6 +5,30 @@ export function formatDateToString(date: Date): string {
 
     return `${year}-${month}-${day}`;
 }
+//combertir fecha en formato string a aobjeto Date
+export function formatStringToDate(fechaStr: string): Date {
+    // Divide la cadena de fecha en partes: año, mes y día
+    const [year, month, day] = fechaStr.split('-').map(Number);
+
+    // Los meses en JavaScript son 0-indexed, por lo que restamos 1 al mes
+    const fecha = new Date(year, month - 1, day);
+
+    // Verifica si la fecha es válida
+    if (isNaN(fecha.getTime())) {
+        throw new Error("Fecha inválida proporcionada.");
+    }
+
+    return fecha;
+}
+export function convertISOStringToDateString(isoString: string): string {
+    const date = new Date(isoString);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 export function addOneMont(fecha: string): string {
     // Crear una nueva fecha basada en la fecha dada

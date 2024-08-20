@@ -15,7 +15,6 @@ import ImageForm from "../../../components/rowImage/ImageForm";
 import { useAuth } from "../../../../context/AppContext";
 import CategorySearch from "../../../components/ModalForm/CategorySearch";
 import { FaSearch } from "react-icons/fa";
-import { TbNumber2Small } from "react-icons/tb";
 
 
 function ProductForm() {

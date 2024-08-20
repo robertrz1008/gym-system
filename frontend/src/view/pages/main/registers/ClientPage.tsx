@@ -5,15 +5,23 @@ import { IoIosSearch } from "react-icons/io";
 import ClientTable from "../../../components/tables/ClientTable";
 import { useNavigate } from "react-router-dom";
 import { useAbm } from "../../../../context/StoreContext";
-import { StoreContextIn } from "../../../../interfaces/autInterface";
+import { AppContextIn, StoreContextIn } from "../../../../interfaces/autInterface";
 import { FiFilter } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import ClientSidebar from "../../../components/FiltersSidebar/ClientsFilters";
+import {PDFDownloadLink} from "@react-pdf/renderer"
+import ClientReport from "../../../../PDF/reports/ClientReport";
+import UploadButton from "../../../components/reusable/UploadButton";
+import { useAuth } from "../../../../context/AppContext";
+import { Tooltip } from 'react-tooltip'
+
 
 
 function ClientPage() {
 
-  const {getClients, getClientsByFilter} = useAbm() as StoreContextIn
+  const {getClients, getClientsByFilter, clients} = useAbm() as StoreContextIn
+  const {showToasSuccess} = useAuth() as AppContextIn
+
   const [showSidebar, setSidebar] = useState<boolean>(false);
   const [isFilterList, setFilterList] = useState(false)
 
@@ -60,7 +68,7 @@ function ClientPage() {
               style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}
               className={`filter-con ${isFilterList? "filter-active": ""}`}
               onClick={() => {
-                if(isFilterList){ //si el listado por filtro esta activo
+                if(isFilterList){ //si el listado por filtro esta activo 
                   setFilterList(false)
                   getClients()
                   return 
@@ -71,13 +79,29 @@ function ClientPage() {
               <p>Filtro</p>
             </div>
         </div> 
-        
+
+        <div style={{width: "180px", display: "flex", justifyContent:"space-between"}}>
+          {/* boton para generar reporte */}
+          <a className="my-export">
+          <PDFDownloadLink document={<ClientReport clients={clients}/>} fileName="clientes-reporte">
+              <div onClick={() => {
+                setTimeout(() => {showToasSuccess("Reporte generado")}, 200);
+              }}>
+                <UploadButton/>
+              </div>
+          </PDFDownloadLink>
+          </a>
+          <Tooltip anchorSelect=".my-export" place="bottom">Exportar</Tooltip>
+
           <button 
               onClick={() => clientForm()}
               className="btn btn-add"
           > 
-            cliente
+            + cliente
           </button>
+        </div>
+        
+          
         </div>
         <ClientTable/>
         <ClientSidebar

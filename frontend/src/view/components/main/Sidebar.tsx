@@ -7,6 +7,10 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoIosFitness } from "react-icons/io";
 import { NavLink } from 'react-router-dom';
 import { TbCreditCardPay } from "react-icons/tb";
+import { MdOutlinePeople } from "react-icons/md";
+import { TbReportSearch } from "react-icons/tb";
+import { CiAlignBottom } from "react-icons/ci";
+import { IoSettingsOutline } from "react-icons/io5";
 
 interface Props{
     ChangeLaout:() => void
@@ -24,7 +28,8 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
         >  
             <IoMdMenu/>
         </div>
-            <ul className={!dbMinimixe? 'dashborad-list': "dashborad-list-minimixe"}>
+           <div className="dashboard-list-con">
+           <ul className={!dbMinimixe? 'dashborad-list': "dashborad-list-minimixe"}>
               <li>
                 <NavLink 
                       to="/home"
@@ -71,10 +76,43 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
                     to="/Pay"
                     className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <TbCreditCardPay/>
-                    <h5>Vender</h5>
+                    <h5>Realizar pago</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/Memberships"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <MdOutlinePeople/>
+                    <h5>Miembros</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/Reports"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <TbReportSearch/>
+                    <h5>Reportes</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <CiAlignBottom/>
+                    <h5>Estadistica</h5>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                    to="/"
+                    className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
+                    <IoSettingsOutline/>
+                    <h5>Estadistica</h5>
                 </NavLink>
               </li>
             </ul>
+           </div>
     </section>
   )
 }

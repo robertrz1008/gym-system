@@ -1,9 +1,11 @@
 import {useContext, createContext, useState, useEffect} from "react"
-import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams } from "../interfaces/autInterface"
-import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedRequest, getClientsRequest } from "../api/clientRequest"
+import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams, clientMembership } from "../interfaces/autInterface"
+import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedRequest, getClientsRequest, getMembersByFilterRequest, getMembersRequest } from "../api/clientRequest"
 import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
 import { createProductDetailRequest, createSaleRequest, udpateSaleTotalRequest } from "../api/saleRequest"
+import { convertISOStringToDateString, formatStringToDate } from "../utils/DateUtils"
+import { expireMembershipRequest } from "../api/membershipRequest"
 
 
 const appContext = createContext({})
@@ -20,6 +22,7 @@ export const useAbm = () => {
 export default function StoreContextProvider({children}: contexArg){
 
     const [clients, setClients] = useState<Client[]>([])
+    const [members, SetMembers] = useState<clientMembership[]>([])
     const [product, setProducts] = useState<Array<Product>>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [clientModify, setClientModify] = useState<Client>() 
@@ -86,6 +89,39 @@ export default function StoreContextProvider({children}: contexArg){
       } catch (error) {
         
       }
+    }
+    //CLIENT MEMBERS
+    const getClientsMembership = async () => {
+      try {
+          const response = await getMembersRequest()
+          SetMembers(response.data)
+      } catch (error) {
+          console.log(error)
+      }
+    } 
+    async function getClientMembershipByFIlter(val: string){
+      try {
+        const response = await getMembersByFilterRequest(val)
+        SetMembers(response.data)
+      } catch (error) {
+          console.log(error)
+      }
+    }
+    async function expireMembership(){ // se caduca aquellas membresias una ves acabado el plazo
+
+    const response = await getMembersRequest()
+    SetMembers(response.data)
+
+    for (const cli of members) {
+        const dateExpire = convertISOStringToDateString(cli.dateExpired)
+        const a = formatStringToDate(dateExpire)
+        const toDay = new Date()
+        if(a <= toDay && cli.id_status == 1){
+            await expireMembershipRequest(cli.id)
+        }
+    }
+    getClientsMembership()
+
     }
 
     // PRODUCTS
@@ -155,6 +191,7 @@ export default function StoreContextProvider({children}: contexArg){
       const response = await getEquipamentsByFilterRequest(value)
       setEquipments(response.data)
     }
+    
 
     // product Sale
     function sumTotal(){
@@ -241,7 +278,8 @@ export default function StoreContextProvider({children}: contexArg){
 
     return (
         <appContext.Provider value={{
-            clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter, clientLisded,
+            clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter, clientLisded, 
+            members, getClientsMembership, getClientMembershipByFIlter, expireMembership,
             product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter, getCategoriesList, categories, productListed,
             equipments, getEquipmentsList, setEquipmentUpdate, isEquiUpdateMode, equiModify, setEquipmentMode, getEquipmentsByFilter, deleteEquipment,
             productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero,

@@ -39,6 +39,7 @@ function AppPage() {
         setSmashSren(false);
       }, 2000); 
     navigate("/home")
+
   }, []);
 
   return (

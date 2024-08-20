@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import { useAbm } from '../../../context/StoreContext'
 import { StoreContextIn } from '../../../interfaces/autInterface'
 import { TextField } from '@mui/material'
-import { getProductsRequest } from '../../../api/productRequest'
-import { CgLogIn } from 'react-icons/cg'
 
 interface Props{
     amountValue: number

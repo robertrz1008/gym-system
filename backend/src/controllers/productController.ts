@@ -3,16 +3,17 @@ import connectdb from "../db/conectiondb";
 import { CustomRequest, ProductParams } from "../utils/Interfaces";
 
 
-export const getCategoryesRequest = async (_req: Request, res: Response) => {
+export const getCategoryesRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        const response = await pgClient.query("select * from categories")
+        const response = await pgClient.query("select * from categories where id_user = $1", [req.user.id])
         pgClient.release() 
         res.json(response.rows)
     } catch (error) {
         console.log(error)
     }
 }
+
 export const getCategoryByIdRequest = async (req: Request, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
@@ -23,12 +24,13 @@ export const getCategoryByIdRequest = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
 export const createCategoryRequest = async (req: CustomRequest, res: Response) => {
     const {description} = req.body
     try {
         const pgClient = await connectdb.connect()
-        const sqlQuery = "INSERT INTO categories(description) VALUES($1)"
-        await pgClient.query(sqlQuery, [description])
+        const sqlQuery = "INSERT INTO categories(description, id_user) VALUES($1, $2)"
+        await pgClient.query(sqlQuery, [description, req.user.id])
         pgClient.release()
         res.status(501).json({msg: "success"})
     } catch (error) {
@@ -36,15 +38,18 @@ export const createCategoryRequest = async (req: CustomRequest, res: Response) =
     }
 }
 
-export const getProductsRequest = async (_req: Request, res: Response) => {
+export const getProductsRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
         const sqlQuery = `
-        select pr.id, pr.description, pr.price_venta, pr.price_compra, pr.stock, pr.id_category, pr.id_image, ca.description as "category_name"
-            from products as pr LEFT JOIN categories as ca 
-            on pr.id_category = ca.id;
+        select 
+            pr.id, pr.description, pr.price_venta, pr.price_compra, pr.stock, pr.id_category, pr.id_image, 
+            ca.description as "category_name"
+        FROM products as pr LEFT JOIN categories as ca 
+            on pr.id_category = ca.id
+        where pr.id_user = $1;
         `
-        const response = await pgClient.query(sqlQuery)
+        const response = await pgClient.query(sqlQuery, [req.user.id])
         pgClient.release()
         res.json(response.rows)
     } catch (error) {
@@ -115,11 +120,9 @@ export const updateProductStockRequest = async (req: CustomRequest, res: Respons
 export const deleteProductRequest = async (req: Request, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        console.log("obteniendo id_image del producto")
         const product = await pgClient.query("select * from products where id = $1", [req.params.id])
         const par = product.rows[0].id_image
         await pgClient.query("DELETE FROM products wHERE id = $1", [req.params.id])
-        console.log("eliminado la imagen del producto")
         await pgClient.query("DELETE FROM images wHERE id = $1", [par])
         pgClient.release()
         res.json({msg: "producto eliminado"})
@@ -144,7 +147,7 @@ export const updateProductoRequest = async (req: Request, res: Response) => {
     }
 }
 
-export const getProductListedRequest = async (req: Request, res: Response) => {
+export const getProductListedRequest = async (req: CustomRequest, res: Response) => {
 
     function setOrderBy(n: number){
         if(n == 1) return "description"
@@ -155,7 +158,7 @@ export const getProductListedRequest = async (req: Request, res: Response) => {
 
         let script = `select pr.id, pr.description, pr.price_venta, pr.price_compra, pr.stock, pr.id_category, pr.  id_image, ca.description as "category_name"
             from products as pr LEFT JOIN categories as ca 
-            on pr.id_category = ca.id where pr.description like '%%' `
+            on pr.id_category = ca.id where pr.id_user = '${req.user.id}' `
 
         if(proParams.isStock){
             script += `and pr.stock > 0 `

@@ -1,12 +1,14 @@
 import {request, Router} from "express"
 import { authRequired } from "../middleware/validatorToken"
-import { changeImage, createClientRequest, createImage, deleteClientRequest, deleteImage, getClientByFilterRequest, getClientsListedRequest, getClientsRequest, getImagesById, updateClientRequest } from "../controllers/clientController"
+import { changeImage, createClientRequest, createImage, deleteClientRequest, deleteImage, getClientByFilterRequest, getClientMebersByFilterRequest, getClientMebersRequest, getClientsListedRequest, getClientsRequest, getImagesById, updateClientRequest } from "../controllers/clientController"
 import upload from "../middleware/upload"
 
 const autRote = Router()
 
 autRote.get("/getClients", authRequired, getClientsRequest)
+autRote.get("/getMembers", authRequired, getClientMebersRequest)
 autRote.get("/getClients/:filter", authRequired, getClientByFilterRequest)
+autRote.get("/getMembers/:filter", authRequired, getClientMebersByFilterRequest)
 autRote.post("/getClientsListed", authRequired, getClientsListedRequest)
 autRote.post("/createClient", authRequired, createClientRequest)
 autRote.delete("/deleteClient/:id", authRequired, deleteClientRequest)

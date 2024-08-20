@@ -5,7 +5,7 @@ import { Client, PaymentOptions, StoreContextIn } from "../../../../interfaces/a
 import ModalDialog from "../../../components/main/ModalDialog";
 import ClientSearch from "../../../components/ModalForm/ClientSearch";
 import { makePaymentMemership } from "../../../../api/membershipRequest";
-import { addOneMont } from "../../../../utils/DateUtils";
+import { addOneMont, formatDateToString } from "../../../../utils/DateUtils";
 import SelectButton from "../../../components/main/SelectButton";
 import { useNavigate } from "react-router-dom";
 
@@ -59,13 +59,21 @@ function PayPage() {
     }
     return null
   }
+  //si no se ingresa la fecha en la entrada, el sistema lo hara automaticamente
+  function today(): string {
+    if(!entryDate){
+      let hoy = new Date()
+      return formatDateToString(hoy)
+    }
+    return entryDate as string
+  }
 
   async function makePayment(){
     try {
       const payment = {
         id_client: clientName?.id as number,
         id_pay_option: typePay?.value as number,
-        pay_date: entryDate as string,
+        pay_date: today(),
         expiration_date:  isPayMont()
       }
       const total =  await makePaymentMemership(payment)

@@ -18,7 +18,7 @@ function ProductTable() {
     useEffect(() => {
         getEquipmentsList()
     }, [])
-
+ 
   return (
     <div className='table-con'>
         <table>

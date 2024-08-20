@@ -1,4 +1,5 @@
 import './css/App.css'
+import './css/Report.css'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import LoginPage from './view/pages/auth/LoginPage';
 import AppPage from './view/pages/AppPage';
@@ -16,6 +17,8 @@ import SalePage from './view/pages/main/transactions/SalePage';
 import PayPage from './view/pages/main/transactions/PayPage';
 import SaleSuccess from './view/pages/main/transactions/SaleSuccess';
 import PaymentSuccess from './view/pages/main/transactions/PaymentSuccess';
+import ReportsPage from './view/pages/main/report/ReportsPage';
+import MembershipList from './view/pages/main/memberships/MembershipsList';
 
 
 function App() {
@@ -41,6 +44,9 @@ function App() {
                         <Route path='Sale/success/:monto' element={<SaleSuccess/>}/>
                         <Route path='Pay' element={<PayPage/>}/>
                         <Route path='Pay/success/:monto' element={<PaymentSuccess/>}/>
+                        <Route path='Reports' element={<ReportsPage/>}/>
+                        <Route path='Memberships' element={<MembershipList/>}/>
+
                     </Route>
                 </Route>
           </Routes>
