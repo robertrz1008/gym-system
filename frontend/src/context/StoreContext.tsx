@@ -1,11 +1,11 @@
 import {useContext, createContext, useState, useEffect} from "react"
-import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams, clientMembership } from "../interfaces/autInterface"
+import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams, clientMembership, PaymentsReport, PymentReportParam } from "../interfaces/autInterface"
 import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedRequest, getClientsRequest, getMembersByFilterRequest, getMembersRequest } from "../api/clientRequest"
 import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
 import { createProductDetailRequest, createSaleRequest, udpateSaleTotalRequest } from "../api/saleRequest"
 import { convertISOStringToDateString, formatStringToDate } from "../utils/DateUtils"
-import { expireMembershipRequest } from "../api/membershipRequest"
+import { expireMembershipRequest, getPaymentsReportByParamsRequest, getPaymentsReportRequest } from "../api/membershipRequest"
 
 
 const appContext = createContext({})
@@ -23,6 +23,7 @@ export default function StoreContextProvider({children}: contexArg){
 
     const [clients, setClients] = useState<Client[]>([])
     const [members, SetMembers] = useState<clientMembership[]>([])
+    const [paymentsReport, setPaymentSReport] = useState<PaymentsReport[]>([])
     const [product, setProducts] = useState<Array<Product>>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [clientModify, setClientModify] = useState<Client>() 
@@ -123,13 +124,28 @@ export default function StoreContextProvider({children}: contexArg){
     getClientsMembership()
 
     }
+    async function getPaymentReport(m1: string, m2:string) {
+      try {
+        const response = await getPaymentsReportRequest(m1, m2)
+        setPaymentSReport(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    async function lisPaymentReportByParams(params: PymentReportParam){
+      try {
+        const response = await getPaymentsReportByParamsRequest(params)
+        setPaymentSReport(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     // PRODUCTS
     async function getProductsList(){
       try {
         const response = await getProductsRequest()
         setProducts(response.data)
-        console.log(response.data)
       } catch (error) {
         console.log(error)
       }
@@ -279,7 +295,7 @@ export default function StoreContextProvider({children}: contexArg){
     return (
         <appContext.Provider value={{
             clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter, clientLisded, 
-            members, getClientsMembership, getClientMembershipByFIlter, expireMembership,
+            members, getClientsMembership, getClientMembershipByFIlter, expireMembership, paymentsReport, getPaymentReport, lisPaymentReportByParams,
             product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter, getCategoriesList, categories, productListed,
             equipments, getEquipmentsList, setEquipmentUpdate, isEquiUpdateMode, equiModify, setEquipmentMode, getEquipmentsByFilter, deleteEquipment,
             productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero,

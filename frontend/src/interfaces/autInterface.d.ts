@@ -27,6 +27,20 @@ export interface clientMembership{
     status: string
     id_status: number
 }
+export interface PaymentsReport{
+    name: string,
+    dni: string,
+    pay_date: string,
+    type_payment: string
+    total: number
+}
+export interface PymentReportParam{
+    fromDate: string,
+    toDate: string,
+    orderBy: number,
+    order:number
+}
+
 export interface ClientsParam{
     memberships: boolean
     orderByName: number | null
@@ -115,6 +129,9 @@ export interface StoreContextIn{
     cliUPdateMode: (val: boolean) => void
     clientLisded: (cli: ClientsParam) => void
     members: clientMembership[]
+    paymentsReport: PaymentsReport[]
+    lisPaymentReportByParams: (params: PymentReportParam) => void
+    getPaymentReport: (m1: string, m2:string) =>   void
     getClientsMembership: () => void
     getClientMembershipByFIlter: (filter: string) => void
     expireMembership: () => void

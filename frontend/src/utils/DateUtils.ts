@@ -45,3 +45,22 @@ export function addOneMont(fecha: string): string {
     nuevaFecha.setMonth(nuevaFecha.getMonth() + 1);
     return formatDateToString(nuevaFecha);
 }
+export function thisMonth() {
+    const hoy = new Date();
+    
+    // Obtener el año y mes actual
+    const year = hoy.getFullYear(); // Cuatro dígitos del año
+    const month = (hoy.getMonth() + 1).toString().padStart(2, '0'); // Meses de 0-11, así que se suma 1
+    
+    // Crear la fecha del primer día del mes
+    const primerDia = `${year}-${month}-01`;
+    
+    // Formatear la fecha de hoy
+    const diaActual = hoy.getDate().toString().padStart(2, '0');
+    const fechaHoy = `${year}-${month}-${diaActual}`;
+    
+    return {
+        primerDia,
+        fechaHoy
+    };
+}

@@ -136,38 +136,8 @@ ADD CONSTRAINT fk_id_user FOREIGN KEY (id_user)
 REFERENCES users(id);
 
 
-update clients set id_status = 2 where id = 10
-
-select * from clients
-
-SELECT 
-    cli.id, 
-    cli.name, 
-    pm.pay_date AS "datePay", 
-    pm.expiration_date AS "dateExpired", 
-    cs.description AS "status"
-FROM 
-    clients AS cli
-JOIN 
-    client_status AS cs 
-    ON cli.id_status = cs.id
-JOIN 
-    payments_membership AS pm 
-    ON pm.id_client = cli.id
-JOIN 
-    (
-        SELECT 
-            id_client, 
-            MAX(pay_date) AS max_pay_date
-        FROM 
-            payments_membership
-        GROUP BY 
-            id_client
-    ) AS last_payment 
-    ON pm.id_client = last_payment.id_client 
-    AND pm.pay_date = last_payment.max_pay_date
-WHERE 
-    pm.id_pay_option = 1 
-    AND cli.id_user = 1
-ORDER BY 
-    pm.pay_date DESC;
+ select cli.name, cli.dni, pm.pay_date, po.description as "type_payment", pm.total
+            from payments_membership as pm
+            LEFT join clients as cli on pm.id_client = cli.id
+            JOIN pay_options as po on pm.id_pay_option = po.id
+            WHERE cli.name ilike '%%' and pm.pay_date BETWEEN 2024-08-01 and 2024-08-21 order by cli.name desc

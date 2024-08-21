@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import connectdb from "../db/conectiondb";
-import { CustomRequest } from "../utils/Interfaces";
+import { CustomRequest, PymentReportParam } from "../utils/Interfaces";
+import { registerRequest } from "./autController";
 
 export const getPayOptipsRequest = async (_req: Request, res: Response) => {
     try {
@@ -52,5 +53,66 @@ export const expireMembershipRequest = async (req: Request, res: Response) => {
 
     } catch (error) {
         
+    }
+}
+
+export const getPaymentsReportRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const query = `
+            select cli.name, cli.dni, pm.pay_date, po.description as "type_payment", pm.total 
+            from payments_membership as pm 
+            LEFT join clients as cli on pm.id_client = cli.id
+            JOIN pay_options as po on pm.id_pay_option = po.id
+            WHERE pm.pay_date BETWEEN $1 and $2
+            and pm.id_user = '${req.user.id}'
+            order by pm.pay_date;
+        `
+        const pgClient = await connectdb.connect()
+        const response = await pgClient.query(query, [req.params.m1, req.params.m2])
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getPaymentsReportByParamsRequest = async (req: CustomRequest, res: Response) => {
+
+    function setOrderBy(n: number){
+        if(n == 1) return "cli.name"
+        if(n == 2) return "pm.pay_date"
+        if(n == 3) return "pm.total"
+    }
+
+    function sqlQuery(params: PymentReportParam) {
+        let script= `
+            select cli.name, cli.dni, pm.pay_date, po.description as "type_payment", pm.total 
+            from payments_membership as pm 
+            LEFT join clients as cli on pm.id_client = cli.id
+            JOIN pay_options as po on pm.id_pay_option = po.id
+            WHERE cli.name ilike '%%' 
+        `
+        if(params.fromDate && params.toDate){
+            script += `and pm.pay_date BETWEEN '${params.fromDate}' and '${params.toDate}' `
+        }
+        if(params.orderBy > 0){
+            script += `order by ${setOrderBy(params.orderBy)} `
+
+            if(params.order == 1){
+                script += `desc`
+            }else{
+                script += `asc`
+            }
+        }
+        console.log(script)
+        return script
+    }
+    try {
+        const pgClient = await connectdb.connect()
+        const response = await pgClient.query(sqlQuery(req.body))
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
     }
 }

@@ -32,7 +32,7 @@ function ClientPage() {
   const onFilterList= () => setFilterList(true)
 
   function clientForm(){
-    navigate("/client/form")
+    navigate("/client/form") 
   } 
 
   useEffect(() => {

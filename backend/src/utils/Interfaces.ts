@@ -21,6 +21,12 @@ export interface ClientFilter{
     memberships: boolean
     orderByName: number
 }
+export interface PymentReportParam{
+    fromDate: string,
+    toDate: string,
+    orderBy: number,
+    order:number
+}
 
 export interface ProductParams{
     isStock: boolean

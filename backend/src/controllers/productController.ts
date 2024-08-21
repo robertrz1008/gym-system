@@ -178,7 +178,6 @@ export const getProductListedRequest = async (req: CustomRequest, res: Response)
                 script += `asc`
             }
         }
-        console.log(script)
         return script
     }
 

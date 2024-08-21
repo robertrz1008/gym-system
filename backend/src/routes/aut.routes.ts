@@ -11,6 +11,6 @@ autRote.post("/register", requireInput, validateSchema(registerSchema), register
 autRote.post("/login", validateSchema(loginSchema), loginReguest)
 autRote.post("/logout", logoutRequest)
 autRote.get("/profile", authRequired, profileRequest)
-autRote.get("/Verify", verifyToken)
+autRote.get("/Verify", verifyToken) 
 
 export default autRote
