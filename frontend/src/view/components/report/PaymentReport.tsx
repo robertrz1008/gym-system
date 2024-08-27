@@ -62,7 +62,9 @@ function PaymentReport() {
           </a>
           <Tooltip anchorSelect=".my-export" place="bottom">Exportar</Tooltip>
         </div>
+
         <PaymentsReportTable/>
+        
         <PaymentSidebar
             closeSidebar={closeSidebar}
             showSidebar={showSidebar}

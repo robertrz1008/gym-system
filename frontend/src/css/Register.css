@@ -28,14 +28,9 @@
 .table-con{
     width: 92%;
     margin-top: 10px;
-    /* background-color: white; */
-    /* padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* box-shadow: 0 0 2px rgb(68, 52, 52); */
 }
 
 table {
@@ -45,7 +40,7 @@ table {
 }
 
 /* table */
-.table-head {
+thead{
     border-bottom: 1px solid rgb(235, 225, 225);
 } 
 

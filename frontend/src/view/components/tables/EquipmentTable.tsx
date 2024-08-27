@@ -33,7 +33,7 @@ function ProductTable() {
                 </tr>
             </thead>
             {
-                !equipments? (<h1>No hay cliente</h1>): (
+                !equipments? (<h1>No hay Equipos</h1>): (
                      <tbody>
                         {
                             equipments.map((data, id) => (

@@ -135,9 +135,9 @@ ALTER TABLE payments_membership
 ADD CONSTRAINT fk_id_user FOREIGN KEY (id_user)
 REFERENCES users(id);
 
+select to_char(date_trunc('Month', date), 'TMMonth') as "month", sum(total) as "income"
+FROM sales 
+WHERE DATE_TRUNC('year', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = 1
+GROUP BY month ORDER BY month
 
- select cli.name, cli.dni, pm.pay_date, po.description as "type_payment", pm.total
-            from payments_membership as pm
-            LEFT join clients as cli on pm.id_client = cli.id
-            JOIN pay_options as po on pm.id_pay_option = po.id
-            WHERE cli.name ilike '%%' and pm.pay_date BETWEEN 2024-08-01 and 2024-08-21 order by cli.name desc
+SELECT sum(total) from sales WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = 1

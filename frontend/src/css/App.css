@@ -175,6 +175,9 @@ body{
   border-radius: 4px;
   border: 1px solid rgb(165, 163, 163);
 }
+.fs-hiden{
+  color: white;
+}
 .filter-selectinput option{
   height: 34px;
   transition: all 0.5s ease;

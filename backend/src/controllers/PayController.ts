@@ -41,6 +41,22 @@ export const createPaymetRequest = async (req: CustomRequest, res: Response) => 
         console.log(error)        
     }
 }
+export const getMonthlyPaymentssRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const query = `
+            select to_char(date_trunc('Month', pay_date), 'TMMonth') as "month", count(id) as "memberships", sum(total) as "income"
+            FROM payments_membership 
+            WHERE DATE_TRUNC('year', pay_date) = DATE_TRUNC('year', CURRENT_DATE) and id_user = '${req.user.id}' and id_pay_option = 1
+            GROUP BY month ORDER BY month
+        `
+        const response = await pgClient.query(query)
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const expireMembershipRequest = async (req: Request, res: Response) => {
 

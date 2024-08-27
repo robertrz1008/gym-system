@@ -7,7 +7,6 @@ import DeleteProductMsg from "../ModalDialog/DeleteProductMsg";
 import ProductImage from "../rowImage/ProductImage";
 import { useEffect } from "react";
 import { Tooltip } from 'react-tooltip'
-import { formatNumberWithDots } from "../../../utils/numbersUtils";
 
 
 function ProductTable() {

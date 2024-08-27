@@ -2,16 +2,39 @@ import { Request, Response } from "express";
 import connectdb from "../db/conectiondb";
 import { CustomRequest } from "../utils/Interfaces";
 
-export const getSalesRequest = async (_req: Request, res: Response) => {
+export const getSalesReportRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
-        const response = await pgClient.query("select * from sales order by id")
+        const sqlQuery = `
+            select sa.date, pro.description as "product", pro.price_venta, pd.amount, pd.subtotal 
+                from sales as sa JOIN product_detail as pd on sa.id = pd.id_sale 
+                join products as pro on pro.id = pd.id_product
+            WHERE sa.id_user = '${req.user.id}' and sa.date between $1 and $2`
+
+        const response = await pgClient.query(sqlQuery, [req.params.date1, req.params.date2])
         pgClient.release()
         res.json(response.rows)
     } catch (error) {
         console.log(error)
     }
 }
+export const getMonthlySalesResponse = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const query = `
+            select to_char(date_trunc('Month', date), 'TMMonth') as "month", sum(total) as "income"
+            FROM sales 
+            WHERE DATE_TRUNC('year', date) = DATE_TRUNC('year', CURRENT_DATE) and id_user = 1
+            GROUP BY month ORDER BY month
+        `
+        const response = await pgClient.query(query)
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const createSaleRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
@@ -49,6 +72,21 @@ export const updateTotalSaleRequest = async (req: Request, res: Response) => {
         await pgClient. query(query, [total, req.params.id])
         res.json({msg: "MOdigicado el total de la venta !"})
         pgClient.release()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getTodaysIncome = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const query = `
+           SELECT sum(total) from sales 
+           WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = ${req.user.id}
+        `
+        const response = await pgClient.query(query)
+        pgClient.release()
+        res.json(response.rows)
     } catch (error) {
         console.log(error)
     }

@@ -47,7 +47,7 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
                     <h5>Cliente</h5>
                 </NavLink>
               </li>
-              <li>
+              <li> 
                 <NavLink 
                     to="/Products"
                     className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
@@ -97,7 +97,7 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
               </li>
               <li>
                 <NavLink 
-                    to="/"
+                    to="/Statistics"
                     className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <CiAlignBottom/>
                     <h5>Estadistica</h5>

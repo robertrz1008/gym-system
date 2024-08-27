@@ -34,6 +34,18 @@ export interface PaymentsReport{
     type_payment: string
     total: number
 }
+export interface MonthlyMemberships{
+    month: string,
+    income: number
+    memberships: number
+}
+export interface SalesReport{
+    date: string,
+    product: string,
+    price_venta: number,
+    amount: number,
+    subtotal: number
+}
 export interface PymentReportParam{
     fromDate: string,
     toDate: string,
@@ -166,4 +178,10 @@ export interface StoreContextIn{
     createSale: () => void
     total: number
     totalZero: () => void
+    listSalesReport: (date1:string, date2: string) => void
+    salesReport: SalesReport[]
+    getMonthMemberships: () => void
+    monthlyMemberships: MonthlyMemberships[]
+    getMonthlySales: () => void
+    monthlySales: {month: string, income: number}[]
 }

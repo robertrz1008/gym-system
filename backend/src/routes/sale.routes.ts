@@ -1,10 +1,11 @@
-import {request, Router} from "express"
+import { Router} from "express"
 import { authRequired } from "../middleware/validatorToken"
-import { createProductDetialRequest, createSaleRequest, getSalesRequest, updateTotalSaleRequest } from "../controllers/saleController"
+import { createProductDetialRequest, createSaleRequest, getMonthlySalesResponse, getSalesReportRequest, updateTotalSaleRequest } from "../controllers/saleController"
 
 const saleRoute = Router()
 
-saleRoute.get("/getSales", authRequired, getSalesRequest)
+saleRoute.get("/getSalesReport/:date1/:date2", authRequired, getSalesReportRequest)
+saleRoute.get("/getMonthlySales", authRequired, getMonthlySalesResponse)
 saleRoute.post("/createSale", authRequired, createSaleRequest)
 saleRoute.put("/updateTotalSale/:id", authRequired, updateTotalSaleRequest)
 saleRoute.post("/createProductDetail", authRequired, createProductDetialRequest)

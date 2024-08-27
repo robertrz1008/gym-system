@@ -10,7 +10,9 @@ interface totalSale{
     total: number
 }
 
-export const getProductDetialRequest = () => axios.get("/getSales")
+export const getSalesReportRequest  = (date1: string, date2: string) => axios.get(`/getSalesReport/${date1}/${date2}`)
+
+export const getMonthlySalesRequest = () => axios.get("/getMonthlySales")
 
 export const createSaleRequest = () => axios.post("/createSale")
 

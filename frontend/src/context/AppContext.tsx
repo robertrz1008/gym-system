@@ -36,8 +36,7 @@ export function AppContextProvider({children}: contexArg){
     }    
     const showToasError = (msg: string) => {
         toast.current?.show({severity:'error', summary: 'Success', detail:msg, life: 2000});
-  }
-
+    }
 
     const singUp = async (user: User) => {
         setAuthLoading(true)
@@ -142,7 +141,7 @@ export function AppContextProvider({children}: contexArg){
             getImage,
             toast,
             showToasSuccess,
-            showToasError
+            showToasError,
         }}>
             {children}
         </appContext.Provider>

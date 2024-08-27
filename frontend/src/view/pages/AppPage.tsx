@@ -33,6 +33,7 @@ function AppPage() {
   function changePMenu(){
     ssetPMenut(!pMenu)
   }
+  
 
   useEffect(() => {
       setTimeout(() => {
@@ -42,35 +43,42 @@ function AppPage() {
 
   }, []);
 
-  return (
-    <div 
-      onClick={() => ssetPMenut(false)}
-      className="app-con"
-    >
-      <Toast ref={toast} position="bottom-right"/>
-      {smashSreen && (<SmashSreen/>)}
-        <Navbar 
-              openDMenu={openDMenu}
-              changePMenu={changePMenu}
-        />
-        <div onClick={(e) => e.stopPropagation() }>
-          <ProfileMenu 
-                pMenu={pMenu}
-          />
-        </div>
-        <div className={!dbMinimixe? "app-layout": "app-db-minimixe"}>
-            <Sidebar 
-                  ChangeLaout={ChangeLaout}
-                  dbMinimixe={dbMinimixe}
+
+    if(smashSreen) {
+
+      return <SmashSreen/> //pantalla de carga
+
+    }else{
+
+      return (
+        <div 
+          onClick={() => ssetPMenut(false)}
+          className="app-con"
+        >
+          <Toast ref={toast} position="bottom-right"/>
+            <Navbar 
+                  openDMenu={openDMenu}
+                  changePMenu={changePMenu}
             />
-            <SidebarMenu 
-                  dMenu={dMenu}
-                  closeDMenu={closeDMenu}
-            />
-                <Outlet/> 
+            <div onClick={(e) => e.stopPropagation() }>
+              <ProfileMenu 
+                    pMenu={pMenu}
+              />
+            </div>
+            <div className={!dbMinimixe? "app-layout": "app-db-minimixe"}>
+                <Sidebar 
+                      ChangeLaout={ChangeLaout}
+                      dbMinimixe={dbMinimixe}
+                />
+                <SidebarMenu 
+                      dMenu={dMenu}
+                      closeDMenu={closeDMenu}
+                />
+                    <Outlet/> 
+            </div>
         </div>
-    </div>
-  )
+      )
+    }
 }
 
 export default AppPage

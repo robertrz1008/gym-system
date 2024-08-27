@@ -41,6 +41,13 @@ export const styles = StyleSheet.create({
       borderColor: '#bfbfbf',
       borderBottom: "none"
     },
+    tableCol10: {
+      width: '15%',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: '#bfbfbf',
+      borderBottom: "none"
+    },
     headerCell: {
         margin: 5,
         fontSize: 10,

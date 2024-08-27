@@ -1,27 +1,36 @@
 import { TabView, TabPanel } from 'primereact/tabview';
-import ProductTable from '../../../components/tables/ProductTable';
 import PaymentReport from '../../../components/report/PaymentReport';
 import { useAbm } from '../../../../context/StoreContext';
 import { StoreContextIn } from '../../../../interfaces/autInterface';
 import { useEffect } from 'react';
-import { thisMonth } from '../../../../utils/DateUtils';
+import { thisMonth, toDay } from '../../../../utils/DateUtils';
+import SalesReport from '../../../components/report/SalesReport';
 
 
 function ReportsPage() {
 
-    const {getPaymentReport} = useAbm() as StoreContextIn
+    const {getPaymentReport, listSalesReport, salesReport} = useAbm() as StoreContextIn
 
     useEffect(() => {
         const month = thisMonth()
         getPaymentReport(month.primerDia, month.fechaHoy)
+        const day = toDay()
+        listSalesReport(day.fechaA01, day.fechaActual)
     }, [])
+
+    useEffect(() => {
+        console.log(salesReport)
+    }, [salesReport])
     
     return (
     <div className='main-page'>
+        <div className='title-con'>
+            <h3 className='subtitle'>Reportes</h3>
+        </div>
         <div className="report-tables-con">
             <TabView >
                 <TabPanel header="Ventas">
-                <ProductTable/>
+                    <SalesReport/>
                 </TabPanel>
 
                 <TabPanel header="Pagos">

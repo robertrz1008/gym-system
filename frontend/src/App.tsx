@@ -19,6 +19,7 @@ import SaleSuccess from './view/pages/main/transactions/SaleSuccess';
 import PaymentSuccess from './view/pages/main/transactions/PaymentSuccess';
 import ReportsPage from './view/pages/main/report/ReportsPage';
 import MembershipList from './view/pages/main/memberships/MembershipsList';
+import StatisticsPage from './view/pages/main/Statistic/StatisticsPage';
 
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
                         <Route path='Pay/success/:monto' element={<PaymentSuccess/>}/>
                         <Route path='Reports' element={<ReportsPage/>}/>
                         <Route path='Memberships' element={<MembershipList/>}/>
-
+                        <Route path='Statistics' element={<StatisticsPage/>}/>
                     </Route>
                 </Route>
           </Routes>

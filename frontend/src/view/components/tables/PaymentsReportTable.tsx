@@ -12,7 +12,7 @@ function PaymentsReportTable() {
     }
 
   return (
-    <div className='table-con'>
+    <div className='table-con' style={{width:"100%"}}>
     <table>
         <thead>
             <tr>

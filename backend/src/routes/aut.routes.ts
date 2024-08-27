@@ -9,7 +9,7 @@ const autRote = Router()
 autRote.get("/users", getUsersRequest)
 autRote.post("/register", requireInput, validateSchema(registerSchema), registerRequest)
 autRote.post("/login", validateSchema(loginSchema), loginReguest)
-autRote.post("/logout", logoutRequest)
+autRote.post("/logout", logoutRequest) 
 autRote.get("/profile", authRequired, profileRequest)
 autRote.get("/Verify", verifyToken) 
 

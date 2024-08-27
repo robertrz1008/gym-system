@@ -1,11 +1,11 @@
 import {useContext, createContext, useState, useEffect} from "react"
-import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams, clientMembership, PaymentsReport, PymentReportParam } from "../interfaces/autInterface"
+import { contexArg, Client, Product, Equipment, ProductSale, Category, ClientsParam, ProductParams, clientMembership, PaymentsReport, PymentReportParam, SalesReport, MonthlyMemberships } from "../interfaces/autInterface"
 import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedRequest, getClientsRequest, getMembersByFilterRequest, getMembersRequest } from "../api/clientRequest"
 import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
-import { createProductDetailRequest, createSaleRequest, udpateSaleTotalRequest } from "../api/saleRequest"
+import { createProductDetailRequest, createSaleRequest, getMonthlySalesRequest, getSalesReportRequest, udpateSaleTotalRequest } from "../api/saleRequest"
 import { convertISOStringToDateString, formatStringToDate } from "../utils/DateUtils"
-import { expireMembershipRequest, getPaymentsReportByParamsRequest, getPaymentsReportRequest } from "../api/membershipRequest"
+import { expireMembershipRequest, getMonthlyMembershipRequest, getPaymentsReportByParamsRequest, getPaymentsReportRequest } from "../api/membershipRequest"
 
 
 const appContext = createContext({})
@@ -37,6 +37,9 @@ export default function StoreContextProvider({children}: contexArg){
     const [productDetail, setProductDetail] = useState<ProductSale[]>([])
     const [isBtnDisabled, setBtnDisabled] = useState(true)
     const [total, setTotal] = useState(0)
+    const [salesReport, setSalesReport] = useState<SalesReport[]>([])
+    const [monthlyMemberships, setMonthlyMemberships] = useState<MonthlyMemberships[]>([])
+    const [monthlySales, setMonthlySales] = useState<{month: string, income: number}[]>([])
 
 
     useEffect(() => {
@@ -291,15 +294,43 @@ export default function StoreContextProvider({children}: contexArg){
         return false
       }
     }
+    async function listSalesReport(date1: string, date2: string){
+      console.log([date1, date2])
+      try {
+        const response = await getSalesReportRequest(date1, date2)
+        setSalesReport(response.data)
+      } catch (error) {
+          console.log(error)
+      }
+    }
+    //statistics
+    async function getMonthMemberships(){
+      try {
+        const response = await getMonthlyMembershipRequest()
+        setMonthlyMemberships(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    async function getMonthlySales(){
+      try {
+        console.log("peticion de ingresos")
+        const response = await getMonthlySalesRequest()
+        console.log(response.data)
+        setMonthlySales(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     return (
         <appContext.Provider value={{
             clients, getClients, deleteClient, clientModify, setClientUpdate, cliUPdateMode, isCliUpdateMode, getClientsByFilter, clientLisded, 
-            members, getClientsMembership, getClientMembershipByFIlter, expireMembership, paymentsReport, getPaymentReport, lisPaymentReportByParams,
+            members, getClientsMembership, getClientMembershipByFIlter, expireMembership, paymentsReport, getPaymentReport, lisPaymentReportByParams, getMonthMemberships, monthlyMemberships,
             product, getProductsList, proModify, setProductUpdate, isProUpdateMode, setProductMode,  deleteProduct, getProductsByFilter, getCategoriesList, categories, productListed,
             equipments, getEquipmentsList, setEquipmentUpdate, isEquiUpdateMode, equiModify, setEquipmentMode, getEquipmentsByFilter, deleteEquipment,
-            productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero,
-            openModalDialog, closeModalDialog, showModalD, isBtnDisabled
+            productDetail, addProductSale, changeProductAmount, total, deleteProductDetail, createSale, totalZero, listSalesReport, salesReport, getMonthlySales, monthlySales,
+            openModalDialog, closeModalDialog, showModalD, isBtnDisabled,
         }}>
             {children}
         </appContext.Provider>

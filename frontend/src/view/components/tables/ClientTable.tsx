@@ -21,7 +21,7 @@ function ClientTable() {
   return (
     <div className='table-con'>
         <table>
-            <thead>
+            <thead className="register-thead">
                 <tr>
                     <th className="td-id">#</th>
                     <th>Nombre y Apellido</th>
@@ -58,7 +58,7 @@ function ClientTable() {
                                             <a className="my-anchor-element">
                                                 <MdDeleteOutline/> 
                                             </a>
-                                            <Tooltip anchorSelect=".my-anchor-element" place="bottom">Eliminar</Tooltip>
+                                            <Tooltip anchorSelect=".my-anchor-element" place="left-start">Eliminar</Tooltip>
 
                                         </div>
                                         <ModalDialog>
