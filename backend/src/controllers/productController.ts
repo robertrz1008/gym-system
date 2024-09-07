@@ -7,7 +7,7 @@ export const getCategoryesRequest = async (req: CustomRequest, res: Response) =>
     try {
         const pgClient = await connectdb.connect()
         const response = await pgClient.query("select * from categories where id_user = $1", [req.user.id])
-        pgClient.release() 
+        pgClient.release()
         res.json(response.rows)
     } catch (error) {
         console.log(error)

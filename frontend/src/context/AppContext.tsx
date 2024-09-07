@@ -28,7 +28,7 @@ export function AppContextProvider({children}: contexArg){
 
     const buttonDisable = () => setIsDisabled(true)
     const buttonEnable = () => setIsDisabled(false)
-    
+     
     const toast = useRef<Toast>(null);
 
     const showToasSuccess = (msg: string) => {
@@ -38,6 +38,7 @@ export function AppContextProvider({children}: contexArg){
         toast.current?.show({severity:'error', summary: 'Success', detail:msg, life: 2000});
     }
 
+    //aut
     const singUp = async (user: User) => {
         setAuthLoading(true)
         buttonDisable
@@ -121,6 +122,8 @@ export function AppContextProvider({children}: contexArg){
             console.log(error)
         }
     }
+
+
 
     useEffect(() => {
         checkLogin()

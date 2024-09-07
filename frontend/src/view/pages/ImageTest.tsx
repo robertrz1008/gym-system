@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import { useAuth } from '../../context/AppContext'
 import { AppContextIn } from '../../interfaces/autInterface'
-import { changeImagesRequest, createImagesRequest } from '../../api/clientRequest'
+import { createImagesRequest } from '../../api/clientRequest'
 import "../../css/FileInput.css"
 import { openEditor } from "react-profile";
 import "react-profile/themes/dark.min.css";
@@ -36,6 +36,12 @@ function ImageTest(): JSX.Element {
       if(fe) {
         // la almacenos en esta variable de estado
         setFileURL(fe)
+
+        const response = await fetch(fe)
+        const blob = await response.blob();
+        const editedFile = new File([blob], selectedFile.name, { type: blob.type });
+        // Almacenamos el archivo editado en el estado
+        setFile(editedFile);
       }
       
     }

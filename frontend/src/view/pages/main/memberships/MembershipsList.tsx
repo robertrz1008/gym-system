@@ -6,17 +6,8 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { Tooltip } from 'react-tooltip'
 import { useNavigate } from "react-router-dom";
 import MembershipTable from "../../../components/tables/MembershipTable";
-import { useEffect } from "react";
 import { useAbm } from "../../../../context/StoreContext";
 import { StoreContextIn } from "../../../../interfaces/autInterface";
-
-function isMAy(a: Date, b:Date){
-  if(a > b){
-    return "Es mayor"
-  }else{
-    return "es menor"
-  }
-}
 
 
 function MembershipList() {
@@ -24,11 +15,6 @@ function MembershipList() {
   const navigate = useNavigate()
   const {getClientMembershipByFIlter} = useAbm() as StoreContextIn
 
-  useEffect(() => {
-  const a = new Date(2024, 10, 13)
-  const b = new Date()
-  console.log(isMAy(a, b))
-}, [])
 
   return (
     <div  className="main-page">

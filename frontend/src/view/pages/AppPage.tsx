@@ -44,6 +44,7 @@ function AppPage() {
   }, []);
 
 
+
     if(smashSreen) {
 
       return <SmashSreen/> //pantalla de carga
@@ -55,7 +56,7 @@ function AppPage() {
           onClick={() => ssetPMenut(false)}
           className="app-con"
         >
-          <Toast ref={toast} position="bottom-right"/>
+          <Toast ref={toast} position="top-right"/>
             <Navbar 
                   openDMenu={openDMenu}
                   changePMenu={changePMenu}

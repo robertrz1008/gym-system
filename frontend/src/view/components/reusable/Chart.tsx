@@ -49,7 +49,7 @@ function ChartCom() {
     }, []);
 
     return (
-        <div style={{width: "50%", margin:"auto"}}>
+        <div style={{width: "80%", height:"80%", margin:"auto"}}>
             <Chart type="bar" data={chartData} options={chartOptions} />
         </div>
     )

@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
+import { ChartItems } from '../../../interfaces/autInterface';
 
 interface Props{
     title: string
-    items: {
-        labels: string[],
-        data: number[]
-        colors: string[]
-    }
+    items: ChartItems
 }
 
 export default function BarChart({title, items}: Props) {

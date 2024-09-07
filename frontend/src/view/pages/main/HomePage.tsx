@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react'
-import {useNavigate} from "react-router-dom"
 import { clientMembership, Product, StoreContextIn } from '../../../interfaces/autInterface'
 import { useAbm } from '../../../context/StoreContext'
-import ChartCom from '../../components/reusable/Chart'
 import { IoPersonOutline } from "react-icons/io5";
 import { AiOutlineProduct } from "react-icons/ai";
 import { MdOutlinePeople } from "react-icons/md";
 import { FaDollarSign } from "react-icons/fa6";
 import { getClientsRequest, getMembersRequest } from '../../../api/clientRequest'
 import { getProductsRequest } from '../../../api/productRequest'
-import { getPayOptipsRequest } from '../../../api/membershipRequest'
+import { getToDayIncomeRequest } from '../../../api/saleRequest'
+import { formatNumberWithDots } from '../../../utils/numbersUtils'
+import MembershipExpiTable from '../../components/tables/MembershipsExpITable';
+import DailyIncomeDashboard from '../../components/Dashboards/DailyIncomeDashboard';
 
 
 function HomePage() {
-  const navigate = useNavigate()
 
   const {expireMembership} = useAbm() as StoreContextIn
   const [clinumber, setCliNumber] = useState(0)
   const [proNumber, setProNumber] = useState(0)
   const [memNumber, setMemNumber] = useState(0)
+  const [income, setIncome] = useState(0)
 
   async function getCliNumber(){
     const res =await getClientsRequest()
@@ -34,8 +35,11 @@ function HomePage() {
     const res = await getMembersRequest()
     const pro: clientMembership[] = res.data
     const p = pro.filter((data) => data.status = "miembro")
-    console.log(p)
     setMemNumber(p.length)
+  }
+  async function getIncome(){
+    const res =await getToDayIncomeRequest()
+    setIncome(res.data[0].sum)
   }
 
   useEffect(() => {
@@ -43,11 +47,14 @@ function HomePage() {
     getCliNumber()
     getProNumber()
     getMemNumber()
+    getIncome()
   }, [])
 
   return (
     <div className='main-page'>
-      <h3>Inicio</h3>
+      <div className='title-con'>
+        <h3>Inicio</h3>
+      </div>
       {/* <button onClick={() => {
         navigate("/img")
       }}>
@@ -86,11 +93,16 @@ function HomePage() {
           <FaDollarSign/>
           <div className='target-texts' >
             <h4>Ingresos del dia</h4>
-            <h1>10.000</h1>
+            <h1>{!income? "0": formatNumberWithDots(income)}</h1>
           </div>
         </div>
       </div>
-      <ChartCom/>
+      
+      <div className='data-section'>
+        <MembershipExpiTable/>
+        <DailyIncomeDashboard/>
+      </div>
+      <br />
     </div>
   )
 }

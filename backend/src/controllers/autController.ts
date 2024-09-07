@@ -80,6 +80,20 @@ export const logoutRequest = async (req: Request, res: Response) => {
     })
     res.sendStatus(200)
 }
+export const comparePasswordRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const response = await pgClient.query("SELECT * FROM users WHERE id = $1", [req.user.id])
+        const profile = response.rows[0]
+        const isMatch = await bcrypt.compare(req.params.pass, profile.password) 
+
+        if(!isMatch) return res.status(404).json({res: true})
+
+        res.status(501).json({res: false})
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const profileRequest = async (req: CustomRequest, res: Response) => {
     try {
@@ -111,4 +125,30 @@ export const verifyToken = async (req: CustomRequest, res: Response) => {
         
         res.json(response.rows[0])
     })
+}
+export const updateProfileRequest = async (req: CustomRequest, res: Response) => {
+    const {name, email} = req.body
+    try {
+        const pgClient = await connectdb.connect()
+        const sqlQuery = "update users set name = $1, email = $2 where id = $3"
+        const response = await pgClient.query(sqlQuery, [name, email, req.user.id])
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const changeProfileImgRequest = async (req: CustomRequest, res: Response) => {
+    const {proId, imgId} = req.params
+    try {
+        console.log("cambiando la imagen del producto")
+        const pgClient = await connectdb.connect()
+        const sqlQuery = "update users set id_image = $1 where id = $2"
+        await pgClient.query(sqlQuery, [imgId, proId])
+        pgClient.release()
+        res.status(501)
+    } catch (error) {
+        console.log(error)
+    }
 }

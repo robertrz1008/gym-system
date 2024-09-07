@@ -140,4 +140,3 @@ FROM sales
 WHERE DATE_TRUNC('year', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = 1
 GROUP BY month ORDER BY month
 
-SELECT sum(total) from sales WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = 1

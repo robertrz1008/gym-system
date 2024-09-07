@@ -3,6 +3,8 @@ import axios from "./axios"
 
 export const getPayOptipsRequest = () => axios.get("/getPayMembership" )
 
+export const getMembershipsExpiredRequest = (d1: string, d2: String) => axios.get(`/getMembersExpired/${d1}/${d2}` )
+
 export const getMonthlyMembershipRequest = () => axios.get("/getMonthlyPayments")
 
 export const makePaymentMemership = (pay: PaymentMembership) => axios.post("/createPayMembership", pay) 

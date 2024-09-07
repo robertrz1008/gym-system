@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react"
 import { useAbm } from "../../../context/StoreContext"
-import { StoreContextIn } from "../../../interfaces/autInterface"
+import { ChartItems, StoreContextIn } from "../../../interfaces/autInterface"
 import BarChart from "../reusable/BarChart"
 import FullLoading from "../main/FullLoading"
 import MonthlyMembershipTable from "../tables/MonthlyMembershipTable"
 
-interface ChartItems{
-  labels: string[],
-  data: number[],
-  colors: string[]
-}
+
 
 function PaymentsDashboard() {
 

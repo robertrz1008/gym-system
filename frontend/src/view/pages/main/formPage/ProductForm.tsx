@@ -259,6 +259,7 @@ function ProductForm() {
                       http={http}
                   />
                   <div className='fileName-body'>
+                      {/* eliminar imagen */}
                       <button 
                         disabled={isBntDisabled}
                         className={isBntDisabled? "img-form-btn-disable" : "img-form-btn"}

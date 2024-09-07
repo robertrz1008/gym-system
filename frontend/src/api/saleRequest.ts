@@ -14,6 +14,10 @@ export const getSalesReportRequest  = (date1: string, date2: string) => axios.ge
 
 export const getMonthlySalesRequest = () => axios.get("/getMonthlySales")
 
+export const getDailySalesRequest  = (date1: string, date2: string) => axios.get(`/getDailySales/${date1}/${date2}`)
+
+export const getToDayIncomeRequest = () => axios.get("/getToDaysIncome")
+
 export const createSaleRequest = () => axios.post("/createSale")
 
 export const createProductDetailRequest = (proD: ProDetail) => axios.post(`/createProductDetail`, proD)

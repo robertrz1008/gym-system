@@ -4,7 +4,7 @@ import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedReques
 import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
 import { createProductDetailRequest, createSaleRequest, getMonthlySalesRequest, getSalesReportRequest, udpateSaleTotalRequest } from "../api/saleRequest"
-import { convertISOStringToDateString, formatStringToDate } from "../utils/DateUtils"
+import { convertISOStringToDateString, formatDateToString, formatStringToDate } from "../utils/DateUtils"
 import { expireMembershipRequest, getMonthlyMembershipRequest, getPaymentsReportByParamsRequest, getPaymentsReportRequest } from "../api/membershipRequest"
 
 
@@ -112,19 +112,19 @@ export default function StoreContextProvider({children}: contexArg){
       }
     }
     async function expireMembership(){ // se caduca aquellas membresias una ves acabado el plazo
+      console.log("buscando meimbros")
+      const response = await getMembersRequest()
+      SetMembers(response.data)
 
-    const response = await getMembersRequest()
-    SetMembers(response.data)
-
-    for (const cli of members) {
-        const dateExpire = convertISOStringToDateString(cli.dateExpired)
-        const a = formatStringToDate(dateExpire)
-        const toDay = new Date()
-        if(a <= toDay && cli.id_status == 1){
-            await expireMembershipRequest(cli.id)
-        }
-    }
-    getClientsMembership()
+      for (const cli of response.data) {
+          const dateExpire = convertISOStringToDateString(cli.dateExpired)
+          const a = formatStringToDate(dateExpire)
+          const toDay = new Date()
+          if(toDay >= a && cli.id_status == 1){
+              await expireMembershipRequest(cli.id)
+          }
+      }
+      getClientsMembership()
 
     }
     async function getPaymentReport(m1: string, m2:string) {

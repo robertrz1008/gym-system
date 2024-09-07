@@ -1,7 +1,3 @@
-import React from 'react'
-import { StoreContextIn } from '../../../interfaces/autInterface'
-import { useAbm } from '../../../context/StoreContext'
-
 interface Props{
     fileURL: string
     http: string
@@ -9,10 +5,6 @@ interface Props{
 }
 
 function ImageForm({fileURL, http, isEntityMode}:Props) {
-
-    const { isEquiUpdateMode} = useAbm() as StoreContextIn
-
-
 
     if (!fileURL && !isEntityMode) {
         return(

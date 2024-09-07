@@ -105,10 +105,10 @@ function Sidebar({ChangeLaout, dbMinimixe}: Props) {
               </li>
               <li>
                 <NavLink 
-                    to="/"
+                    to="/Settings"
                     className={({isActive}) => (isActive ? "link-item item-active" : "link-item")}>
                     <IoSettingsOutline/>
-                    <h5>Estadistica</h5>
+                    <h5>Configuraciones</h5>
                 </NavLink>
               </li>
             </ul>

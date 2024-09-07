@@ -97,7 +97,7 @@ export function toDay(){
     };
 
 }
-
+//la fecha de hoy y la fecha de dias pasados segun el numero ingresado
 export function getDateDaysAgo(diasAtras: number): { fechaHoy: string; fechaPasada: string } {
     const hoy = new Date();
 

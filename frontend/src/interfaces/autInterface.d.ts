@@ -7,7 +7,12 @@ export interface User{
     id: number,
     name: string,
     email: string,
+    image_id?: number | null
     password: string
+}
+export interface ProfileModify {
+    name: string,
+    email: string,
 }
 export interface Category{
     id?: int
@@ -31,6 +36,7 @@ export interface PaymentsReport{
     name: string,
     dni: string,
     pay_date: string,
+    expiration_date: string,
     type_payment: string
     total: number
 }
@@ -107,6 +113,11 @@ export interface FormValues{
     email: string,
     password: string
 }
+export interface ChartItems{
+    labels: string[],
+    data: number[],
+    colors: string[]
+  }
 export interface AppContextIn{
     isDisabled: boolean,
     singUp: (user: User) => void,

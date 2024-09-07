@@ -96,13 +96,13 @@ export const getPaymentsReportByParamsRequest = async (req: CustomRequest, res: 
 
     function setOrderBy(n: number){
         if(n == 1) return "cli.name"
-        if(n == 2) return "pm.pay_date"
+        if(n == 2) return "pm.pay_date" 
         if(n == 3) return "pm.total"
     }
 
     function sqlQuery(params: PymentReportParam) {
         let script= `
-            select cli.name, cli.dni, pm.pay_date, po.description as "type_payment", pm.total 
+            select cli.name, cli.dni, pm.pay_date, pm.expiration_date, po.description as "type_payment", pm.total 
             from payments_membership as pm 
             LEFT join clients as cli on pm.id_client = cli.id
             JOIN pay_options as po on pm.id_pay_option = po.id
@@ -126,6 +126,25 @@ export const getPaymentsReportByParamsRequest = async (req: CustomRequest, res: 
     try {
         const pgClient = await connectdb.connect()
         const response = await pgClient.query(sqlQuery(req.body))
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getMembersExpiredRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const sqlQuery = `
+             select cli.name, cli.dni, pm.pay_date, pm.expiration_date, po.description as "type_payment", pm.total 
+                from payments_membership as pm 
+                LEFT join clients as cli on pm.id_client = cli.id
+                JOIN pay_options as po on pm.id_pay_option = po.id
+            WHERE pm.expiration_date BETWEEN $1 and $2 and pm.id_user = $3
+            order by pm.expiration_date desc`
+
+        const response = await pgClient.query(sqlQuery, [req.params.date1, req.params.date2, req.user.id])
         pgClient.release()
         res.json(response.rows)
     } catch (error) {

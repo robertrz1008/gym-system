@@ -18,7 +18,7 @@ export const getSalesReportRequest = async (req: CustomRequest, res: Response) =
         console.log(error)
     }
 }
-export const getMonthlySalesResponse = async (req: CustomRequest, res: Response) => {
+export const getMonthlySalesRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
         const query = `
@@ -34,7 +34,23 @@ export const getMonthlySalesResponse = async (req: CustomRequest, res: Response)
         console.log(error)
     }
 }
-
+export const getDailySalesRequest = async (req: CustomRequest, res: Response) => {
+    try {
+        const pgClient = await connectdb.connect()
+        const query = `
+            SELECT DATE(date) AS sale_date, SUM(total) AS total_sales
+            FROM sales
+            WHERE date BETWEEN $1 and $2 and id_user = '${req.user.id}'
+            GROUP BY DATE(date) 
+            ORDER BY  sale_date asc;
+        `
+        const response = await pgClient.query(query, [req.params.date1, req.params.date2])
+        pgClient.release()
+        res.json(response.rows)
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const createSaleRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
@@ -77,7 +93,7 @@ export const updateTotalSaleRequest = async (req: Request, res: Response) => {
     }
 }
 
-export const getTodaysIncome = async (req: CustomRequest, res: Response) => {
+export const getTodaysIncomeRequest = async (req: CustomRequest, res: Response) => {
     try {
         const pgClient = await connectdb.connect()
         const query = `
