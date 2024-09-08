@@ -1,17 +1,15 @@
-import React from 'react'
-import profileImg from "../../../assets/profile.png"
 
 interface Props{
     fileURL: string
-    http: string
-    profileImgId: number | null
+    image: string
 }
 
 function ProfileImage(prop: Props) {
 
+
   return (
     <div className='setting-profile-img-con'>
-        <img src={!prop.fileURL? profileImg: prop.fileURL} alt="" />
+        <img src={!prop.fileURL? prop.image: prop.fileURL} alt="" />
     </div>
   )
 }

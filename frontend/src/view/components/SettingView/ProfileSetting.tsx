@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { AppContextIn, User } from '../../../interfaces/autInterface'
+import { AppContextIn, StoreContextIn, User } from '../../../interfaces/autInterface'
 import { useAuth } from '../../../context/AppContext'
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import ProfileFormModal from '../ModalForm/ProfileFormModal';
@@ -8,22 +8,38 @@ import { FaRegImage } from "react-icons/fa6";
 import ProfileImage from '../rowImage/ProfileImage';
 import { createImagesRequest, deleteImageRequest, getImageByIdRequest } from '../../../api/clientRequest';
 import { changeProfileImgRequest } from '../../../api/autRequest';
+import ModalDialog from '../main/ModalDialog';
+import ChangeProfileImageMsg from '../ModalDialog/ChangeImageMsg';
+import { useAbm } from '../../../context/StoreContext';
+import imgDefault from "../../../assets/default.jpg"
 
 function ProfileSetting() {
 
     const {user, getProfile, logout} = useAuth() as AppContextIn
+    const {openModalDialog, closeModalDialog} = useAbm() as StoreContextIn
 
     const [showModal, setShowModal] = useState(false)
     const [userModify, setUserModify] = useState<User>()
-    const [profileImgId, setProfileImgId] = useState<number | null>(null)
     const [profileImage, setProfileImg] = useState<string>()
     const [file, setFile] = useState<File | null>()
     const [fileURL, setFileURL ] = useState("")
-    
+
+    const http = "http://localhost:3000/"+profileImage
+    //la imagen que se mostrara en el perfil teniendo la imagen por defecto hasta que se carge el indicado
+    const [image, setImage] = useState(http)
+
     const openModal = () => setShowModal(true)
     const closeModal = () => setShowModal(false)
+    
 
-    let http = "http://localhost:3000/"+profileImage
+  function loadingImg(){
+    if(user.image_id == null){
+      setImage(imgDefault)
+    }else{ 
+      setImage(http)
+    }
+  }
+
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,6 +53,7 @@ function ProfileSetting() {
         try {
             const response = await getImageByIdRequest(id)
             setProfileImg(response.data)
+            setFileURL("")
         } catch (error) {
             console.log(error)
         }
@@ -60,10 +77,11 @@ function ProfileSetting() {
             const blob = await response.blob();
             const editedFile = new File([blob], selectedFile.name, { type: blob.type });
             setFile(editedFile);
+            openModalDialog()
           }
         }
     } 
-    async function uploadImg(profileId: number){
+    async function uploadImg(){
         if (!file){
             console.log("error al subir la imagen")
             return
@@ -72,14 +90,22 @@ function ProfileSetting() {
         formData.append('image', file)
 
         try {
+            console.log("subiendo img del perfil")
             const response: any = await createImagesRequest(formData) //el id de la imagen
             const profIdImg = user.image_id
+            console.log("cambiando img anterior")
             await changeProfileImgRequest(response.data, user.id)
             
             if(profIdImg){
                 await deleteImageRequest(profIdImg as number)
+                console.log("deleting before image")
             }
-            
+            getProfile()
+            //cargamos la imagen del perfil
+            setTimeout(()=>{
+                getProfileImg(user.image_id as number)
+            }, 500)
+            closeModalDialog()
         } catch (error) {
             console.log(error)
         }
@@ -87,8 +113,13 @@ function ProfileSetting() {
 
 
     useEffect(() =>{
+      loadingImg()
       getProfile()
+      getProfileImg(user.image_id as number)
     },[])
+    useEffect(() => {
+        loadingImg()
+    }, [profileImage])
 
     useEffect(() =>{
         if(user){
@@ -98,9 +129,8 @@ function ProfileSetting() {
                 email: user.email,
                 password: user.password
             })
-            setProfileImgId(user.image_id as number | null)
+            getProfileImg(user.image_id as number)
         }
-        console.log(user)
       },[user])
 
         return (
@@ -109,8 +139,7 @@ function ProfileSetting() {
                 <div className='setting-profile-info-con'>
                     <ProfileImage
                             fileURL={fileURL}
-                            http={http}
-                            profileImgId={profileImgId }
+                            image={image}
                     />
                     <div className='profile-texts-con'>
                         <p >{!user? "" : user.email}</p>
@@ -158,6 +187,11 @@ function ProfileSetting() {
                         whowModal={showModal}
                         closemodal={closeModal}
                 />)}
+                <ModalDialog>
+                    <ChangeProfileImageMsg
+                                uploadImg={uploadImg}
+                    />
+                </ModalDialog>
             </div>
     )
 }

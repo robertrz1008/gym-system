@@ -24,7 +24,8 @@ export function AppContextProvider({children}: contexArg){
     const [isAutenticate, setIstAutenticate] = useState(false)
     const [authLoading, setAuthLoading] = useState(false)
     const [loading, setLoading] = useState(false)
-    
+    //imagen de perfil
+    const [profileImage, setProfileImg] = useState<string>()
 
     const buttonDisable = () => setIsDisabled(true)
     const buttonEnable = () => setIsDisabled(false)
@@ -114,6 +115,14 @@ export function AppContextProvider({children}: contexArg){
             console.log(error)
         }
     }
+    async function getProfileImg(id: number){
+        try {
+            const response = await getImageByIdRequest(id)
+            setProfileImg(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const getProfile = async () => {
         try {
             const res = await getProfileRequest()
@@ -123,8 +132,7 @@ export function AppContextProvider({children}: contexArg){
         }
     }
 
-
-
+    
     useEffect(() => {
         checkLogin()
     }, [])
@@ -145,6 +153,8 @@ export function AppContextProvider({children}: contexArg){
             toast,
             showToasSuccess,
             showToasError,
+            profileImage,
+            getProfileImg
         }}>
             {children}
         </appContext.Provider>

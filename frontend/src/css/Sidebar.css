@@ -14,8 +14,6 @@
     transition: all 0.2s ease;
 }
 .menu-exit-con{
-    /* width: 100%;
-    height: 60px; */
     display: flex;
     background-color: #242e3f;
     justify-content: start;
@@ -55,7 +53,7 @@
 }
 .dashborad-list-minimixe li{
     width: 100%;
-    height: 60px;
+    height: 60px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,7 +108,7 @@
     color: rgb(187, 180, 180);
 }
 .dashborad-list-minimixe li .item-active svg, .item-active svg{
-    color: white;
+    color: #fff
 }
 
 @media(max-width: 500px){

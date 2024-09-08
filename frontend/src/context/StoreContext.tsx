@@ -4,7 +4,7 @@ import { deleteClientsRequest, getClientsByFilterRequest, getClientsListedReques
 import { deleteProductRequest, getCategoriesRequest, getProductListedRequest, getProductsByFilterRequest, getProductsRequest, updateProductStockRequest } from "../api/productRequest"
 import { deleteEquipamentRequest, getEquipamentsByFilterRequest, getEquipamentsRequest } from "../api/equipamentsReq"
 import { createProductDetailRequest, createSaleRequest, getMonthlySalesRequest, getSalesReportRequest, udpateSaleTotalRequest } from "../api/saleRequest"
-import { convertISOStringToDateString, formatDateToString, formatStringToDate } from "../utils/DateUtils"
+import { convertISOStringToDateString, formatStringToDate } from "../utils/DateUtils"
 import { expireMembershipRequest, getMonthlyMembershipRequest, getPaymentsReportByParamsRequest, getPaymentsReportRequest } from "../api/membershipRequest"
 
 

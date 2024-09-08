@@ -1,13 +1,16 @@
 import "../../../css/NavBar.css"
 import { IoMdMenu } from "react-icons/io";
 import Profile from './Profile';
+import { useNavigate } from "react-router-dom";
 
 interface Props{
   openDMenu: () => void
   changePMenu: () => void
 }
 
-function Navbar({openDMenu, changePMenu}: Props) {
+function Navbar({openDMenu}: Props) {
+
+  const navigate = useNavigate()
   return (
     <>
       <nav>
@@ -20,7 +23,7 @@ function Navbar({openDMenu, changePMenu}: Props) {
         <h1>Gimnacio</h1>
         <div onClick={(e) => {
           e.stopPropagation()
-          changePMenu()
+          navigate("/Settings")
         }}>
           <Profile />
         </div>

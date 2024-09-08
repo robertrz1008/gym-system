@@ -138,6 +138,8 @@ export interface AppContextIn{
     toast: RefObject<Toast>
     showToasSuccess: (msg: string) => void
     showToasError: (msg: string) => void
+    profileImage: string
+    getProfileImg:(id: number) => void
 }
 
 export interface StoreContextIn{

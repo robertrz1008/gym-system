@@ -144,10 +144,10 @@ export const changeProfileImgRequest = async (req: CustomRequest, res: Response)
     try {
         console.log("cambiando la imagen del producto")
         const pgClient = await connectdb.connect()
-        const sqlQuery = "update users set id_image = $1 where id = $2"
+        const sqlQuery = "update users set image_id = $1 where id = $2"
         await pgClient.query(sqlQuery, [imgId, proId])
         pgClient.release()
-        res.status(501)
+        res.json({msg:"exito"})
     } catch (error) {
         console.log(error)
     }

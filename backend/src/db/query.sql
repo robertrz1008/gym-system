@@ -110,8 +110,6 @@ FOREIGN KEY (id_category)
 REFERENCES categories (id);
 
 
-
-
 insert into categories(description) values('Debida'), ('Nutricion')
 
 SELECT * from sales;
@@ -125,9 +123,6 @@ ALTER TABLE clients
 ADD CONSTRAINT fk_id_status FOREIGN KEY (id_status)
 REFERENCES client_status(id);
 
-SELECT * FROM clients
-
-
 ALTER TABLE categories
 ALTER COLUMN id_user SET NOT NULL;
 
@@ -135,8 +130,7 @@ ALTER TABLE payments_membership
 ADD CONSTRAINT fk_id_user FOREIGN KEY (id_user)
 REFERENCES users(id);
 
-select to_char(date_trunc('Month', date), 'TMMonth') as "month", sum(total) as "income"
-FROM sales 
-WHERE DATE_TRUNC('year', date) = DATE_TRUNC('day', CURRENT_DATE) and id_user = 1
-GROUP BY month ORDER BY month
 
+update users set image_id = null WHERE id = 1
+
+SELECT * FROM users

@@ -117,7 +117,7 @@ export const changeImage = async (req: CustomRequest, res: Response) => {
         const pgClient = await connectdb.connect()
         await pgClient.query("update users set id_image = $1 where id = $2", [imgId, id])
         pgClient.release()
-        res.send("mensaje modificado")
+        res.status(501).json({msg: "exito"})
     } catch (error) {
         console.log(error)
     }
