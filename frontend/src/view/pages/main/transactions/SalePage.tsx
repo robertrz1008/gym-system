@@ -7,8 +7,10 @@ function SalePage() {
 
   return (
     <div className="main-page">
-      <h4>Vender</h4>
-        <div className="sale-con">
+      <div className="title-con">
+            <h3 className="subtitle">Vender</h3>
+        </div>
+        <div className="sale-con" style={{marginTop:"10px"}}>
             <ProductDetailSerch/>
             <SaleForm/>
         </div>

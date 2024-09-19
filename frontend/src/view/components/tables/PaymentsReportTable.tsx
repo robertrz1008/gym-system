@@ -18,7 +18,7 @@ function PaymentsReportTable() {
             <tr>
                 <th className="td-id">#</th>
                 <th>Cliente</th>
-                <th>dni</th>
+                <th>DNI</th>
                 <th>Fecha de pagado</th>
                 <th>Tipo de pago</th>
                 <td className="td-price">Monto</td>

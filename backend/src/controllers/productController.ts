@@ -87,13 +87,14 @@ export const createProductRequest = async (req: CustomRequest, res: Response) =>
 
 export const changeProductImgRequest = async (req: CustomRequest, res: Response) => {
     const {proId, imgId} = req.params
+    
     try {
         console.log("cambiando la imagen del producto")
         const pgClient = await connectdb.connect()
         const sqlQuery = "update products set id_image = $1 where id = $2"
         await pgClient.query(sqlQuery, [imgId, proId])
-        pgClient.release()
         console.log("se ha cambiado la img del producto")
+        pgClient.release()
         res.json({msg: "Se ha cambiado la imagen del producto"})
     } catch (error) {
         console.log(error)

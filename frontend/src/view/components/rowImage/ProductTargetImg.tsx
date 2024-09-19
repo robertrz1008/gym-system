@@ -1,8 +1,10 @@
-
-import { Props } from '../../../interfaces/autInterface'
 import { getImageByIdRequest } from '../../../api/clientRequest'
 import { useEffect, useState } from 'react'
 import { Skeleton } from 'primereact/skeleton';
+
+interface Props{
+    id: number
+}
 
 function ProductTargetImg({id}: Props) {
   

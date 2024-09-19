@@ -27,7 +27,9 @@ function Profile() {
     }
   }, [user])
   useEffect(() =>{
+   if(user){
     loadingImg()
+   }
   },[profileImage])
   
 

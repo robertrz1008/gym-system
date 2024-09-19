@@ -74,6 +74,11 @@ function EquipmentForm() {
       if(fe) {
         // la almacenos en esta variable de estado
         setFileURL(fe)
+        //el objeto de la imagen editada para el envio al server
+        const response = await fetch(fe)
+        const blob = await response.blob();
+        const editedFile = new File([blob], selectedFile.name, { type: blob.type });
+        setFile(editedFile);
       }
       
     }
@@ -97,7 +102,7 @@ function EquipmentForm() {
       //cambiamos el id_image del objeto reciene por el id de la imagen nueva
       await changeEquipamentImgRequest(response.data, equiId as number)
 
-      if(equiModify.id_image !=3){
+      if(equiModify.id_image !=51){
         //se elimina si la imagen reemplazada no tiene como id 3
         await deleteImageRequest(equiModify.id_image as number)
       }
@@ -117,7 +122,7 @@ function EquipmentForm() {
 
   async function deleteImg(){
     try {
-      await changeEquipamentImgRequest(3, equiModify.id as number)
+      await changeEquipamentImgRequest(51, equiModify.id as number)
       await deleteImageRequest(equiModify.id_image as number)
       getImage(3)
     } catch (error) {

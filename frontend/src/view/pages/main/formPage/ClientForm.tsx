@@ -22,7 +22,6 @@ function ClientForm() {
 
   useEffect(() => {
     if(isCliUpdateMode){
-      console.log("md mode")
       setName(clientModify.name)
       setTel(clientModify.telephone)
       setCin(clientModify.dni)

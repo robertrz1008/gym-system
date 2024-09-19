@@ -47,7 +47,7 @@ function ProductTable() {
                                     key={id}>
                                     <td className="td-id">{id + 1}</td>
                                     
-                                    <ProductImage id={data.id_image}/>
+                                    <ProductImage id={data.id_image as number}/>
                                     <td>{data.description}</td>
                                     <td className="td-price">{data.category_name}</td>
                                     <td className="td-price">{data.price_venta}</td>

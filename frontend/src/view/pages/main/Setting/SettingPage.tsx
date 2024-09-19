@@ -6,9 +6,8 @@ function SettingPage() {
 
   return (
     <div className='main-page'>
-        <h3>Configuraciones</h3>
 
-        <div className='form-con'>
+        <div className='form-con' style={{marginTop:"20px"}}>
             <div className="pd-title-con" style={{height:"50px"}}>
                 <h4 className='subtitle'>Perfil</h4>
             </div>

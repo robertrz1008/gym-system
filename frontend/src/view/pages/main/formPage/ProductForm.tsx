@@ -53,7 +53,9 @@ function ProductForm() {
 
     //imagen
     async function getImage(id: number){
+      if(!id) return
       try {
+          console.log("obteniendo imagen")
           const response = await getImageByIdRequest(id)
           setImage(response.data)
       } catch (error) {
@@ -84,6 +86,10 @@ function ProductForm() {
       if(fe) {
         // la almacenos en esta variable de estado
         setFileURL(fe)
+        const response = await fetch(fe)
+        const blob = await response.blob();
+        const editedFile = new File([blob], selectedFile.name, { type: blob.type });
+        setFile(editedFile);
       }
       
     }
@@ -101,16 +107,18 @@ function ProductForm() {
     formData.append('image', file)
     try {
       //Creamos la imagen
+      console.log("creando imagen")
       const response: any = await createImagesRequest(formData)
 
       //si es para un nuevo producto, esta variable tomara el id_image del objeto. si es para modificacion tomara del objeto pro a modificar
       const productId = isProUpdateMode? proModify.id : proId
       console.log(productId)
       //cambiamos el id_image del objeto reciene por el id de la imagen nueva
+      console.log("modificando imagen ")
       await changeProductImgRequest(response.data, productId as number)
 
-      if(proModify.id_image !=1){
-        //se elimina si la imagen reemplazada no tiene como id 3
+      if(proModify.id_image != 51){
+        //se elimina si la imagen reemplazada no tiene como id la imagen por defecto
         await deleteImageRequest(proModify.id_image as number)
       }
       navigate("/products")
@@ -129,7 +137,7 @@ function ProductForm() {
 
   async function deleteImg(){
     try {
-      await changeProductImgRequest(3, proModify.id as number)
+      await changeProductImgRequest(51, proModify.id as number)
       await deleteImageRequest(proModify.id_image as number)
       getImage(1)
     } catch (error) {
@@ -225,7 +233,7 @@ function ProductForm() {
       setStock(proModify.stock)
       getProductCategory(proModify.id_category)
 
-      if(proModify.id_image == 3){
+      if(proModify.id_image == 51){
         setBtnDisabled(true)
       }
     }else{

@@ -1,5 +1,6 @@
+import { useAuth } from '../../../context/AppContext';
 import { useAbm } from '../../../context/StoreContext'
-import { StoreContextIn } from '../../../interfaces/autInterface'
+import { AppContextIn, StoreContextIn } from '../../../interfaces/autInterface'
 import { MdOutlineErrorOutline } from "react-icons/md";
 
 interface Props{
@@ -9,6 +10,17 @@ interface Props{
 function DeleteEquipmentsMsg({id}: Props) {
 
     const {closeModalDialog, deleteEquipment} = useAbm() as StoreContextIn
+  const {showToasSuccess} = useAuth() as AppContextIn
+
+
+    async function deleteE(){
+      const r = await deleteEquipment(id as number)
+  
+      if(r){
+        showToasSuccess("Equipo eliminado")
+      }
+      
+    }
 
   return (
     <div className='modal-dialog-con'>
@@ -19,9 +31,7 @@ function DeleteEquipmentsMsg({id}: Props) {
         <div className='btn-con'>
           <button className='btn btn-res' onClick={() => closeModalDialog()}> Cancelar </button>
           <button className='btn btn-add' onClick={() => {
-            if(id){
-                deleteEquipment(id)
-            }
+            deleteE()
           }}> Eliminar </button>
         </div>
     </div>

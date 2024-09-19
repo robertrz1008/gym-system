@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Props } from '../../../interfaces/autInterface'
 import { getImageByIdRequest } from '../../../api/clientRequest'
 import { Skeleton } from 'primereact/skeleton';
+
+interface Props{
+    id: number
+}
 
 function ProductImage({id}: Props) {
 
     const [image, setImage] = useState<string>("")
+    const http = "http://localhost:3000/"+image
+
+
     async function getImage(){
         try {
             const response = await getImageByIdRequest(id as number)
@@ -14,7 +20,8 @@ function ProductImage({id}: Props) {
             console.log(error)
         }
     }
-    const http = "http://localhost:3000/"+image
+    
+    
     useEffect(() => {
         getImage()
     }, [])

@@ -9,7 +9,7 @@ import SalesReport from '../../../components/report/SalesReport';
 
 function ReportsPage() {
 
-    const {getPaymentReport, listSalesReport, salesReport} = useAbm() as StoreContextIn
+    const {getPaymentReport, listSalesReport} = useAbm() as StoreContextIn
 
     useEffect(() => {
         const month = thisMonth()
@@ -17,18 +17,14 @@ function ReportsPage() {
         const day = toDay()
         listSalesReport(day.fechaA01, day.fechaActual)
     }, [])
-
-    useEffect(() => {
-        console.log(salesReport)
-    }, [salesReport])
     
     return (
     <div className='main-page'>
-        <div className='title-con'>
+        <div className='title-con'> 
             <h3 className='subtitle'>Reportes</h3>
         </div>
         <div className="report-tables-con">
-            <TabView >
+            <TabView > 
                 <TabPanel header="Ventas">
                     <SalesReport/>
                 </TabPanel>

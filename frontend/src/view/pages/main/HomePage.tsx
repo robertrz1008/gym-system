@@ -11,6 +11,7 @@ import { getToDayIncomeRequest } from '../../../api/saleRequest'
 import { formatNumberWithDots } from '../../../utils/numbersUtils'
 import MembershipExpiTable from '../../components/tables/MembershipsExpITable';
 import DailyIncomeDashboard from '../../components/Dashboards/DailyIncomeDashboard';
+import { useNavigate } from 'react-router-dom';
 
 
 function HomePage() {
@@ -20,6 +21,8 @@ function HomePage() {
   const [proNumber, setProNumber] = useState(0)
   const [memNumber, setMemNumber] = useState(0)
   const [income, setIncome] = useState(0)
+
+  const navigate = useNavigate()
 
   async function getCliNumber(){
     const res =await getClientsRequest()

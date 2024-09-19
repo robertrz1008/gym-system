@@ -37,7 +37,7 @@ export const createEquipmentRequest = async (req: CustomRequest, res: Response) 
         console.log(pro.rows)
         res.json(pro.rows[0].id)
     } catch (error) {
-        console.log(error) 
+        console.log(error)
     }
 }
 export const changeEquipmentImgRequest = async (req: CustomRequest, res: Response) => {

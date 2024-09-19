@@ -13,7 +13,6 @@ export default function LineChart({title, items}: Props) {
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        console.log("habriendo chart")
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');

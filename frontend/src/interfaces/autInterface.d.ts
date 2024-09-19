@@ -146,7 +146,7 @@ export interface StoreContextIn{
     clients: Client[]
     getClients: () => void
     createClient: (client: Client) => void
-    deleteClient: (id: number) => void
+    deleteClient: (id: number) => boolean
     cliRedirect: boolean
     clientModify: Client
     setClientUpdate: (cli: Client) => void
@@ -173,7 +173,7 @@ export interface StoreContextIn{
     isProUpdateMode: boolean
     setProductMode: (val: boolean) => void
     setProductUpdate: (pro: Product) => void
-    deleteProduct: (id: number) => void
+    deleteProduct: (id: number) => boolean
     productListed: (proP: ProductParams) => void
     equipments: Equipment[]
     isEquiUpdateMode: boolean
@@ -182,7 +182,7 @@ export interface StoreContextIn{
     setEquipmentUpdate: (equip: Equipment) => void
     setEquipmentMode: (val: boolean) => void
     getEquipmentsByFilter: (val: string) => void
-    deleteEquipment: (id: number) => void
+    deleteEquipment: (id: number) => boolean
     productDetail: ProductSale[]
     isBtnDisabled: boolean
     addProductSale: (pr: ProductSale) => void

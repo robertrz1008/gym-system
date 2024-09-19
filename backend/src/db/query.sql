@@ -31,7 +31,6 @@ CREATE TABLE clients(
     id_status INT,
     Foreign Key (id_status) REFERENCES client_status(id)
 );
-alter Table clients ADD COLUMN id_status INT
 
 CREATE TABLE categories(
     id SERIAL PRIMARY KEY,
@@ -48,7 +47,7 @@ CREATE TABLE products(
     price_venta INT NOT NULL,
     stock INT,
     id_image INT DEFAULT 1,
-    id_user INT NOT NULL,
+    id_user INT,
     id_category INT,
     Foreign Key (id_user) REFERENCES users(id),
     Foreign Key (id_image) REFERENCES images(id),
@@ -103,34 +102,35 @@ CREATE table pay_options(
 
 
 
-ALTER Table products ADD COLUMN id_category INT;
-ALTER TABLE products
-ADD CONSTRAINT fk_category
-FOREIGN KEY (id_category)
-REFERENCES categories (id);
+-- ALTER Table products ADD COLUMN id_category INT;
+-- ALTER TABLE products
+-- ADD CONSTRAINT fk_category
+-- FOREIGN KEY (id_category)
+-- REFERENCES categories (id);
 
 
-insert into categories(description) values('Debida'), ('Nutricion')
+-- insert into categories(description) values('Debida'), ('Nutricion')
 
-SELECT * from sales;
+-- SELECT * from sales;
 
-ALTER Table products alter COLUMN id_image add DEFAULT;
-ALTER TABLE products ADD COLUMN id_ctegory INT;
+-- ALTER Table products alter COLUMN id_image set DEFAULT 51;
+-- ALTER TABLE products ADD COLUMN id_ctegory INT;
 
-alter table sales add column total  int;
+-- alter table sales add column total  int;
 
-ALTER TABLE clients
-ADD CONSTRAINT fk_id_status FOREIGN KEY (id_status)
-REFERENCES client_status(id);
+-- ALTER TABLE clients
+-- ADD CONSTRAINT fk_id_status FOREIGN KEY (id_status)
+-- REFERENCES client_status(id);
 
-ALTER TABLE categories
-ALTER COLUMN id_user SET NOT NULL;
+-- ALTER TABLE categories
+-- ALTER COLUMN id_user SET NOT NULL;
 
-ALTER TABLE payments_membership
-ADD CONSTRAINT fk_id_user FOREIGN KEY (id_user)
-REFERENCES users(id);
+-- ALTER TABLE payments_membership
+-- ADD CONSTRAINT fk_id_user FOREIGN KEY (id_user)
+-- REFERENCES users(id);
 
 
-update users set image_id = null WHERE id = 1
+-- select * from products
 
-SELECT * FROM users
+
+-- update products set id_image = 60 where id = 14

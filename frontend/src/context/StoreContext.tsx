@@ -82,8 +82,11 @@ export default function StoreContextProvider({children}: contexArg){
           await deleteClientsRequest(id)
           getClients()
           closeModalDialog()
+          return true
         } catch (error) {
           console.log(error)
+          closeModalDialog()
+          return false
         }
     }
     async function clientLisded(clientParams: ClientsParam){
@@ -112,7 +115,6 @@ export default function StoreContextProvider({children}: contexArg){
       }
     }
     async function expireMembership(){ // se caduca aquellas membresias una ves acabado el plazo
-      console.log("buscando meimbros")
       const response = await getMembersRequest()
       SetMembers(response.data)
 
@@ -168,8 +170,11 @@ export default function StoreContextProvider({children}: contexArg){
         await deleteProductRequest(id)
         getProductsList()
         closeModalDialog()
+        return false
       } catch (error) {
         console.log(error)
+        closeModalDialog()
+          return false
       }
     }
     async function getProductsByFilter(value: string) {
@@ -202,8 +207,11 @@ export default function StoreContextProvider({children}: contexArg){
         await deleteEquipamentRequest(id)
         getEquipmentsList()
         closeModalDialog()
+        return false
       } catch (error) {
         console.log(error)
+        closeModalDialog()
+        return false
       }
     }
     async function getEquipmentsByFilter(value: string) {
@@ -295,7 +303,6 @@ export default function StoreContextProvider({children}: contexArg){
       }
     }
     async function listSalesReport(date1: string, date2: string){
-      console.log([date1, date2])
       try {
         const response = await getSalesReportRequest(date1, date2)
         setSalesReport(response.data)
@@ -314,9 +321,7 @@ export default function StoreContextProvider({children}: contexArg){
     }
     async function getMonthlySales(){
       try {
-        console.log("peticion de ingresos")
         const response = await getMonthlySalesRequest()
-        console.log(response.data)
         setMonthlySales(response.data)
       } catch (error) {
         console.log(error)
