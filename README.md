@@ -60,7 +60,7 @@ cd frontendP
 ```bash
 npm install
 ```
-3. Ejecuta el servidor escribiendo en su teminal:
+3. Ejecuta el cliente escribiendo en su teminal:
 ```bash
 npm run dev
 ```
